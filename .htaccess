@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} .+(mp3|jpg)$ [NC]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^(.*)$ img.php?f=%{REQUEST_URI} [QSA,PT,L]
+</IfModule>
