@@ -7,7 +7,7 @@
 	<body>
 		<p><?php echo $this->eprint($this->introduction); ?></p>
 
-		<?php foreach ($this->songs AS $entry): ?>
+		<?php foreach ($this->songlist AS $entry): ?>
 			<p><b><?php echo $this->eprint($entry['title']); ?></b><br />
 			<?php echo $this->eprint($entry['description']); ?><br />
 			<br />
