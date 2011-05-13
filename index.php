@@ -2,7 +2,7 @@
 require_once('lib/Savant3.php');
 $tpl = new Savant3();
 
-$TEMPLATE = 'kyrie';
+$TEMPLATE = 'kyrie5';
 
 $tpldir = 'tpl/' . $TEMPLATE . '/';
 
