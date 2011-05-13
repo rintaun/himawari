@@ -8,10 +8,9 @@ $tpldir = 'tpl/' . $TEMPLATE . '/';
 
 $tpl->tpldir = $tpldir;
 
-$tpl->title = 'Mawari v0.1-alpha';
-$tpl->introduction = "Welcome! I will be updating this page... whenever it strikes my fancy, I guess. This page is not meant to be a freebie mp3 download page, but to try new samplers, find more music and open up your horizons! I listen to a lot of weird crap, so you're bound to come across _something_ you will like, eventually. I hope.
-
-A lot of these songs have been/are/will be inspirations and/or emotional encouragement with my artwork so hence why I think they deserve to be here, I won't put up stupid shit without any reason, so please don't hate on my musical tastes!";
+$tpl->title = 'kyrie/eleison :: Mawari v0.1-alpha';
+$tpl->introduction = "Welcome! I will be updating this page... whenever it strikes my fancy, I guess. This page is not meant to be a freebie mp3 download page, but to try new samplers, find more music and open up your horizons! I listen to a lot of weird crap, so you're bound to come across _something_ you will like, eventually. I hope.\n\nA lot of these songs have been/are/will be inspirations and/or emotional encouragement with my artwork so hence why I think they deserve to be here, I won't put up stupid shit without any reason, so please don't hate on my musical tastes!";
+$tpl->about = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\ntl;dr So I thought there could be something more here. It seemed like it fit. It's pretty simple to remove though. :)";
 
 $tpl->songlist = array(
 	array(
