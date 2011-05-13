@@ -1,6 +1,3 @@
-body {
-	background-image: url(<?php echo $this->tpldir?>img/bg.png);
-}
 #main {
 	margin-left: -8px;
 	margin-top: -8px;
