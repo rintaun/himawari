@@ -10,7 +10,7 @@
 	</head>
 	<body style="background-image: url(<?php echo $this->tpldir?>img/bg.png);">
 		<div id="main">
-			<img src="<?php echo $this->tpldir?>img/logo.png" alt="kyrie/eleison" />
+			<img src="<?php echo $this->tpldir?>img/logo.png" alt="<?php echo $this->eprint($this->title); ?>" />
 			<div id="sidebar">
 				<ul>
 					<li><a href="#">a thing</a></li>
