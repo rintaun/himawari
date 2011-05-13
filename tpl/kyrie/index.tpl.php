@@ -6,11 +6,11 @@
 		<script type="text/javascript" src="lib/swfobject.js"></script>
 		<script type="text/javascript" src="lib/audio-player/audio-player-uncompressed.js"></script>
 		<script type="text/javascript">AudioPlayer.setup("lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script> 
-		<link rel="stylesheet" type="text/css" href="<?php echo $this->tpldir?>kyrie.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->tpldir?>style.css" />
 	</head>
 	<body style="background-image: url(<?php echo $this->tpldir?>img/bg.png);">
 		<div id="main">
-			<img src="<?php echo $this->tpldir?>img/kyrie.png" alt="kyrie/eleison" />
+			<img src="<?php echo $this->tpldir?>img/logo.png" alt="kyrie/eleison" />
 			<div id="sidebar">
 				<ul>
 					<li><a href="#">a thing</a></li>
