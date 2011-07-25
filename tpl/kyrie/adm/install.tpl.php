@@ -18,43 +18,12 @@
 			<?php if (isset($this->installerror)): ?>
 				<section class="box" style="width: 770px">
 					<hgroup><h2>Error</h2></hgroup>
-					<?php $this->tprint($this->installerror); ?>
+					<?php $this->markdown($this->installerror); ?>
 				</section>
 			<?php endif; ?>
 			<section class="box" style="width: 770px">
 				<hgroup><h1>Installation</h1></hgroup>
 				<form action="install.php" method="post">
-					<section>
-						<hgroup><h2>MySQL Configuration</h2></hgroup>
-						<details>
-							<p>Himawari needs a database to function; currently, only <strong>MySQL</strong> is supported.
-							The first step to installing Himawari is to tell it where it should look for its database.
-							You can enter this information below. If you're unsure of where to find this information,
-							please contact your host's tech support or ask a friend.</p>
-						</details>
-						<table>
-							<tr>
-								<td><label for="mysqluser">Username</label></td>
-								<td><input placeholder="root" value="<?php echo $this->mysqluser; ?>" name="mysqluser" id="mysqluser" /></td>
-							</tr>
-							<tr>
-								<td><label for="mysqlpass">Password</label></td>
-								<td><input type="password" value="<?php echo $this->mysqlpass; ?>" name="mysqlpass" id="mysqlpass" /></td>
-							</tr>
-							<tr>
-								<td><label for="mysqldb">Database Name</label></td>
-								<td><input placeholder="himawari" value="<?php echo $this->mysqldb; ?>" name="mysqldb" id="mysqldb" /></td>
-							</tr>
-							<tr>
-								<td><label for="mysqlhost">Hostname</label></td>
-								<td><input placeholder="localhost" value="<?php echo $this->mysqlhost; ?>" name="mysqlhost" id="mysqlhost" /></td>
-							</tr>
-							<tr>
-								<td><label for="mysqlport">Port</label></td>
-								<td><input placeholder="3306" value="<?php echo $this->mysqlport; ?>" name="mysqlport" id="mysqlport" /></td>
-							</tr>
-						</table>
-					</section>
 					<section>
 						<hgroup><h2>Manager Account</h2></hgroup>
 						<details>

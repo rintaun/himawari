@@ -31,7 +31,7 @@
 				<hgroup>
 					<h1>Introduction</h1>
 				</hgroup>
-				<?php echo $this->markdown($this->introduction); ?>
+				<?php $this->markdown($this->introduction); ?>
 			</section>
 	
 			<br />
@@ -42,7 +42,7 @@
 				</hgroup>
 				<?php foreach ($this->songlist AS $num => $entry): ?>
 					<h2><?php echo $this->eprint($entry['title']); ?></h2>
-					<?php echo $this->markdown($entry['description']); ?>
+					<?php $this->markdown($entry['description']); ?>
 					<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
 				<?php endforeach; ?>
 			</section>

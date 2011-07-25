@@ -1,5 +1,6 @@
 <?php
-if (file_exists('../.config.php'))
+
+if (file_exists('../dat/db'))
 {
 	header('Location: index.php');
 	exit;
@@ -15,12 +16,6 @@ $tpldir = '../tpl/' . $TEMPLATE . '/';
 $tpl->addPath('template', $tpldir);
 $tpl->tpldir = $tpldir;
 
-$tpl->mysqluser = "";
-$tpl->mysqlpass = "";
-$tpl->mysqlhost = "";
-$tpl->mysqlport = "";
-$tpl->mysqldb = "";
-
 $tpl->manageruser = "";
 $tpl->managerpass = "";
 $tpl->managerpassrep = "";
@@ -31,13 +26,8 @@ $tpl->aboutme = "";
 
 if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 {
+	
 	$error = "";
-
-	$tpl->mysqluser = $_POST['mysqluser'];
-	$tpl->mysqlpass = $_POST['mysqlpass'];
-	$tpl->mysqlhost = $_POST['mysqlhost'];
-	$tpl->mysqlport = $_POST['mysqlport'];
-	$tpl->mysqldb = $_POST['mysqldb'];
 	
 	$tpl->manageruser = $_POST['manageruser'];
 	$tpl->managerpass = $_POST['managerpass'];
@@ -47,99 +37,55 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 	$tpl->intro = $_POST['intro'];
 	$tpl->aboutme = $_POST['aboutme'];
 	
+	
 	if ($_POST['managerpass'] != $_POST['managerpassrep'])
 	{
 		$tpl->managerpass = "";
 		$tpl->managerpassrep = "";
 
 		$error .= " - The Manager passwords do not match!\n";
+	
 	}
 	else
 	{
-		$db = mysql_connect($_POST['mysqlhost'] . (!empty($_POST['mysqlport'])) ? ":" . $_POST['mysqlport'] : "",
-					$_POST['mysqluser'], $_POST['mysqlpass']);
+		$db = sqlite_open('../dat/db');
+		
 		if ($db === FALSE)
 		{
-			$error .= " - The specified database information is invalid. :(\n";
+			$error .= " - Could not write /dat/!\n";
 		}
 		else
 		{
-			$query = mysql_query("CREATE DATABASE IF NOT EXISTS " . mysql_real_escape_string($_POST['mysqldb']));
-			$dbselect = mysql_select_db(mysql_real_escape_string($_POST['mysqldb']));
-	
-			if (($query === FALSE) || ($dbselect === FALSE))
-			{
-				$error .= " - Couldn't connect to the specified database name. Do you have the right permissions?\n";
-			}
-			else
-			{
-				$queries[] = "
-					CREATE TABLE IF NOT EXISTS config (
-						opt	VARCHAR	(32)	NOT NULL	PRIMARY KEY			,
-						value	TEXT		NOT NULL
-					) CHARSET=UTF8
-				";
+			$queries[] = "CREATE TABLE config (opt TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL);";
+			$queries[] = "CREATE TABLE songs (id INTEGER NOT NULL PRIMARY KEY, artist TEXT NOT NULL, title TEXT NOT NULL, descr TEXT NOT NULL, fname TEXT NOT NULL);";
+
+			$username = sqlite_escape_string($_POST['manageruser']);
+			$password = sqlite_escape_string(md5(sha1($_POST['managerpass'])));
+			$sitename = sqlite_escape_string($_POST['sitename']);
+			$intro    = sqlite_escape_string($_POST['intro']);
+			$aboutme  = sqlite_escape_string($_POST['aboutme']);
+			$theme    = sqlite_escape_string('kyrie');
 			
-				$queries[] = "
-					CREATE TABLE IF NOT EXISTS songs (
-						id	INT		NOT NULL	PRIMARY KEY	AUTO_INCREMENT	,
-						artist	VARCHAR	(64)	NOT NULL					,
-						title	VARCHAR	(128)	NOT NULL					,
-						descr	TEXT		NOT NULL					,
-						fname	VARCHAR	(128)	NOT NULL
-					) CHARSET=UTF8
-				";
-	
-				$username = mysql_real_escape_string($_POST['manageruser']);
-				$password = mysql_real_escape_string(md5(sha1($_POST['managerpass'])));
-				$sitename = mysql_real_escape_string($_POST['sitename']);
-				$intro    = mysql_real_escape_string($_POST['intro']);
-				$aboutme  = mysql_real_escape_string($_POST['aboutme']);
-				$theme    = mysql_real_escape_string('kyrie');
+			$queries[] = "INSERT INTO config VALUES	('username',     '{$username}')";
+			$queries[] = "INSERT INTO config VALUES	('password',     '{$password}')";
+			$queries[] = "INSERT INTO config VALUES	('sitename',     '{$sitename}')";
+			$queries[] = "INSERT INTO config VALUES	('introduction', '{$intro}')";
+			$queries[] = "INSERT INTO config VALUES	('aboutme',      '{$aboutme}')";
+			$queries[] = "INSERT INTO config VALUES	('theme',        '{$theme}')";
 
-				$queries[] = "
-					INSERT INTO config VALUES
-						('username', '{$username}'),
-						('password', '{$password}'),
-						('sitename', '{$sitename}'),
-						('introduction', '{$intro}'),
-						('aboutme', '{$aboutme}'),
-						('theme', '{$theme}')
-					ON DUPLICATE KEY UPDATE value=VALUES(value)
-				";
-				$break = FALSE;
-				foreach ($queries AS $query)
+			$break = FALSE;
+			foreach ($queries AS $query)
+			{
+				$result = sqlite_exec($db, $query);
+				if ($result === FALSE)
 				{
-					$result = mysql_query($query);
-					if ($result === FALSE)
-					{
-						$error .= "Couldn't create tables! Uh oh.";
-						$break = TRUE;
-						break;
-					}
-				}
-				if ($break !== TRUE)
-				{
-$config = '<?php
-$db = array(
-	"user" => "' . $_POST['mysqluser'] . '",
-	"pass" => "' . $_POST['mysqlpass'] . '",
-	"host" => "' . $_POST['mysqlhost'] . '",
-	"port" => "' . $_POST['mysqlport'] . '",
-	"name" => "' . $_POST['mysqldb'] . '",
-);
-?>';
-					if (($fd = @fopen('../.config.php', 'w')) !== FALSE)
-					{
-						fwrite($fd, $config);
-					}
-					else $tpl->configtext = htmlspecialchars($config);
-
+					$error .= "Couldn't create tables! Uh oh.";
+					$break = TRUE;
+					break;
 				}
 			}
 		}
 	}
-
 
 	if (empty($error)) $file = 'install-complete.tpl.php';
 	else { $tpl->installerror = $error; $file = 'install.tpl.php'; }

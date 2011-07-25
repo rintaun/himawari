@@ -1,25 +1,22 @@
 <?php
-if (!file_exists('../.config.php'))
+if (!file_exists('../dat/db'))
 {
         header('Location: install.php');
         exit;
 }
 
-require_once('../.config.php');
-
-$conn = mysql_connect($db['host'] . (!empty($db['port']) ? ":" . $db['port'] : ""), $db['user'], $db['pass']);
-mysql_select_db($db['name'], $conn);
+$db = sqlite_open('../dat/db');
 
 $query = "SELECT * FROM config";
-$result = mysql_query($query);
-while ($row = mysql_fetch_assoc($result))
+$result = sqlite_query($db, $query);
+while ($row = sqlite_fetch_array($result))
 {
 	$config[$row['opt']] = $row['value'];
 }
 
 $query = "SELECT * FROM songs";
-$result = mysql_query($query);
-while ($row = mysql_fetch_assoc($result))
+$result = sqlite_query($db, $query);
+while ($row = sqlite_fetch_array($result))
 {
 	$songlist[$row['id']] = $row;
 }
