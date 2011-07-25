@@ -6,9 +6,9 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="<?php echo $this->tpldir?>style.css" />
 
-		<script type="text/javascript" src="lib/swfobject.js"></script>
-		<script type="text/javascript" src="lib/audio-player/audio-player-uncompressed.js"></script>
-		<script type="text/javascript">AudioPlayer.setup("lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script> 
+		<script type="text/javascript" src="../lib/swfobject.js"></script>
+		<script type="text/javascript" src="../lib/audio-player/audio-player-uncompressed.js"></script>
+		<script type="text/javascript">AudioPlayer.setup("../lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script> 
 		<!--[if lt IE 9]>
 			<script src="lib/html5.js"></script>
 		<![endif]-->
@@ -19,10 +19,7 @@
 		</header>	
 		<nav id="sidebar">
 			<ul>
-				<li><a href="#">a thing</a></li>
-				<li><a href="#">another thing</a></li>
-				<li><a href="#">yet another thing</a></li>
-				<li><a href="#">a thing with a much longer name</a></li>
+				<li><a href="#">Upload a song</a></li>
 			</ul>			
 		</nav>
 
@@ -59,7 +56,7 @@
 
 		<footer>
 			<small>
-				<a href="adm/">manage</a> :: powered by <a href="http://himawari.projectxero.net/">himawari</a>
+				powered by <a href="http://himawari.projectxero.net/">himawari</a>
 			</small>
 		</footer>
 

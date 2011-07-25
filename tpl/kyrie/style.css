@@ -54,7 +54,7 @@ h2 {
 	zoom: 1;
 	*display: inline;
 }
-section, aside {
+section {
 	width: 570px;
 	display: -moz-inline-stack;
 	display: inline-block;
@@ -64,7 +64,7 @@ section, aside {
 }
 
 #songs {
-	margin-top: 25px;
+	margin-top: 15px;
 	margin-bottom: 15px;
 	padding-bottom: 1px;
 }
@@ -82,7 +82,8 @@ section, aside {
 
 }
 footer {
-	text-align: center;
+	width: 770px;
+	text-align: right;
 }
 footer a {
 	color: #000000;
@@ -92,4 +93,12 @@ footer a {
 footer a:hover {
 	opacity: 0.9;
 	text-shadow: #ACACAC 0px 0px 3px;	
+}
+td,td {
+	vertical-align: top;
+}
+code {
+	margin-left: 50px;
+	display: block;
+	white-space: pre-wrap;
 }
