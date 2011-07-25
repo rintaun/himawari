@@ -2,3 +2,5 @@
 .buildpath
 .project
 dat/db
+dat/*.mp3
+tmp/*
