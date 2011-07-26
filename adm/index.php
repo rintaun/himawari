@@ -1,11 +1,11 @@
 <?php
-if (!file_exists('../dat/db'))
+if (!file_exists('../dat/.db'))
 {
         header('Location: install.php');
         exit;
 }
 
-$db = sqlite_open('../dat/db');
+$db = sqlite_open('../dat/.db');
 
 $query = "SELECT * FROM config";
 $result = sqlite_query($db, $query);
@@ -19,6 +19,13 @@ $result = sqlite_query($db, $query);
 while ($row = sqlite_fetch_array($result))
 {
 	$songlist[$row['id']] = $row;
+}
+
+$query = "SELECT * FROM links";
+$result = sqlite_query($db, $query);
+while ($row = sqlite_fetch_array($result))
+{
+	$links[$row['id']] = $row;
 }
 
 require_once('../lib/Savant3.php');
@@ -37,7 +44,10 @@ $tpl->title = $config['sitename'];
 $tpl->introduction = $config['introduction'];
 $tpl->about = $config['aboutme'];
 
+$tpl->config = $config;
 $tpl->songlist = $songlist;
+$tpl->links = $links;
+
 
 /* shamelessly stolen from the Audio-Player wordpress plugin! */
 function encodeSource($string) {

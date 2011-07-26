@@ -19,30 +19,29 @@
 		</header>	
 		<nav id="sidebar">
 			<ul>
-				<li><a href="#">a thing</a></li>
-				<li><a href="#">another thing</a></li>
-				<li><a href="#">yet another thing</a></li>
-				<li><a href="#">a thing with a much longer name</a></li>
+				<?php foreach ($this->links AS $entry): ?>
+				<li><a href="<?php echo $this->eprint($entry['url']); ?>" alt="<?php echo $this->eprint($entry['alt']); ?>"><?php echo $this->eprint($entry['name']); ?></a></li>
+				<?php endforeach; ?>
 			</ul>			
 		</nav>
 
 		<div id="content">
 			<section class="box">
 				<hgroup>
-					<h1>Introduction</h1>
+					<h1><?php echo $this->eprint($this->config['lang_intro']); ?></h1>
 				</hgroup>
-				<?php $this->markdown($this->introduction); ?>
+				<?php echo $this->markdown($this->introduction); ?>
 			</section>
 	
 			<br />
 	
 			<section id="songs" class="box">
 				<hgroup>
-					<h1>Songs</h1>
+					<h1><?php echo $this->eprint($this->config['lang_songs']); ?></h1>
 				</hgroup>
 				<?php foreach ($this->songlist AS $num => $entry): ?>
 					<h2><?php echo $this->eprint($entry['title']); ?></h2>
-					<?php $this->markdown($entry['description']); ?>
+					<?php echo $this->markdown($entry['description']); ?>
 					<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
 				<?php endforeach; ?>
 			</section>
@@ -51,9 +50,9 @@
 	
 			<section class="box">
 				<hgroup>
-					<h1>About Me</h1>
+					<h1><?php echo $this->eprint($this->config['lang_about']); ?></h1>
 				</hgroup>
-				<?php $this->markdown($this->about); ?>
+				<?php echo $this->markdown($this->about); ?>
 			</section>
 		</div>
 

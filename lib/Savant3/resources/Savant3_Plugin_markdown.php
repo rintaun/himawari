@@ -7,7 +7,7 @@ require_once("Markdown.php");
 class Savant3_Plugin_markdown extends Savant3_Plugin {
 	public function markdown($text)
 	{
-		echo Markdown($text);
+		return Markdown($text);
 	}
 }
 

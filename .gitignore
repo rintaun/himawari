@@ -1,6 +1,6 @@
 .settings/*
 .buildpath
 .project
-dat/db
+dat/.db
 dat/*.mp3
 tmp/*

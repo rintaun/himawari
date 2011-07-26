@@ -1,6 +1,6 @@
 <?php
-if (!file_exists("dat/db")) die("You need to <a href='adm/install.php'>install himawari</a> first!");
-$db = sqlite_open("dat/db");
+if (!file_exists("dat/.db")) die("You need to <a href='adm/install.php'>install himawari</a> first!");
+$db = sqlite_open("dat/.db");
 
 $query = "SELECT * FROM config";
 $result = sqlite_query($db, $query);
@@ -15,6 +15,13 @@ $result = sqlite_query($db, $query);
 while ($row = sqlite_fetch_array($result))
 {
 	$songlist[$row['id']] = $row;
+}
+
+$query = "SELECT * FROM links";
+$result = sqlite_query($db, $query);
+while ($row = sqlite_fetch_array($result))
+{
+	$links[$row['id']] = $row;
 }
 
 require_once('lib/Savant3.php');
@@ -32,6 +39,8 @@ $tpl->introduction = $config['introduction'];
 $tpl->about = $config['aboutme'];
 
 $tpl->songlist = $songlist;
+$tpl->config = $config;
+$tpl->links = $links;
 
 /* shamelessly stolen from the Audio-Player wordpress plugin! */
 function encodeSource($string) {

@@ -18,7 +18,7 @@
 			<?php if (isset($this->installerror)): ?>
 				<section class="box" style="width: 770px">
 					<hgroup><h2>Error</h2></hgroup>
-					<?php $this->markdown($this->installerror); ?>
+					<?php echo $this->markdown($this->installerror); ?>
 				</section>
 			<?php endif; ?>
 			<section class="box" style="width: 770px">

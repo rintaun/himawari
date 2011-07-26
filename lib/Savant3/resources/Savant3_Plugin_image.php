@@ -166,7 +166,7 @@ class Savant3_Plugin_image extends Savant3_Plugin {
 			
 			// not IE, so build a normal image tag.
 			$html = '<img';
-			$html .= ' src="' . htmlspecialchars($file) . '"';
+			$html .= ' src="' . ($file) . '"';
 			
 			// add the alt attribute
 			if (is_null($alt)) {
