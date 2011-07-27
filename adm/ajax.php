@@ -31,13 +31,19 @@ switch ($_GET['action'])
 		break;
 
 	case 'uploadsong':
+		//at the end, we need to return JSON with information about the upload
+		//[{"name":"picture1.jpg","size":902604,"url":"\/\/example.org\/files\/picture1.jpg","thumbnail_url":"\/\/example.org\/thumbnails\/picture1.jpg","delete_url":"\/\/example.org\/upload-handler?file=picture1.jpg","delete_type":"DELETE"}]
+		//Note that the response should always be a JSON array even if only one file is uploaded.
+		//see: https://github.com/blueimp/jQuery-File-Upload/wiki/Setup
 		break;
 	case 'editsongs':
+		//not really sure what i'm doing with this yet...
 		break;
 	//case 'removesong':
 	//	break;
 	
 	case 'addlink':
+		// this and editlinks are next, i think. should be relatively straightforward.
 		break;
 	case 'editlinks':
 		break;

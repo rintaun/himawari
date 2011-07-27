@@ -1,10 +1,10 @@
 <?php
+//error_reporting(E_STRICT | E_ALL);
 if (!file_exists("dat/.db")) die("You need to <a href='adm/install.php'>install himawari</a> first!");
 $db = sqlite_open("dat/.db");
 
 $query = "SELECT * FROM config";
 $result = sqlite_query($db, $query);
-
 while ($row = sqlite_fetch_array($result))
 {
 	$config[$row['opt']] = $row['value'];
@@ -34,13 +34,13 @@ $tpldir = 'tpl/' . $TEMPLATE . '/';
 $tpl->addPath('template', $tpldir);
 $tpl->tpldir = $tpldir;
 
-$tpl->title = $config['sitename'];
-$tpl->introduction = $config['introduction'];
-$tpl->about = $config['aboutme'];
+$tpl->songlist = (isset($songlist)) ? $songlist : array();
+$tpl->config = (isset($config)) ? $config : array();
+$tpl->links = (isset($links)) ? $links : array();
 
-$tpl->songlist = $songlist;
-$tpl->config = $config;
-$tpl->links = $links;
+$tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
+$tpl->introduction = (isset($config['introduction'])) ? $config['introduction'] : '';
+$tpl->about = (isset($config['aboutme'])) ? $config['aboutme'] : '';
 
 /* shamelessly stolen from the Audio-Player wordpress plugin! */
 function encodeSource($string) {
