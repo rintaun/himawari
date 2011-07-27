@@ -14,7 +14,7 @@
 			<img src="<?php echo $this->tpldir?>img/logo.png" alt="Himawari" />
 		</header>	
 
-                <div id="content">
+		<div id="content">
 			<?php if (isset($this->installerror)): ?>
 				<section class="box" style="width: 770px">
 					<hgroup><h2>Error</h2></hgroup>

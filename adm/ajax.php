@@ -1,5 +1,10 @@
 <?php
 if (!file_exists('../dat/.db')) die('{}');
+
+session_start();
+
+if ($_SESSION['loggedin'] !== true) die('{}');
+
 require_once("../lib/Savant3/resources/Markdown.php");
 if (empty($_GET)) die('{}');
 

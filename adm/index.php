@@ -4,6 +4,12 @@ if (!file_exists('../dat/.db'))
         header('Location: install.php');
         exit;
 }
+session_start();
+if ($_SESSION['loggedin'] !== true)
+{
+	header('Location: login.php');
+	exit;
+}
 
 $db = sqlite_open('../dat/.db');
 

@@ -86,8 +86,8 @@
 					case '#editabout':
 						$('#about').hide();
 						$('#aboutedit').show();
-						originals.abouttitle=$('#introtitleedit').attr("value");
-						originals.abouttext=$('#introtextedit').attr("value");
+						originals.abouttitle=$('#abouttitleedit').attr("value");
+						originals.abouttext=$('#abouttextedit').attr("value");
 						break;
 					case '#editabout-accept':
 						$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");

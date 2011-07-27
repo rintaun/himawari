@@ -6,6 +6,8 @@ if (file_exists('../dat/.db'))
 	exit;
 }
 
+session_start();
+
 require_once('../lib/Savant3.php');
 $tpl = new Savant3();
 
@@ -61,7 +63,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 			$queries[] = "CREATE TABLE links (id INTEGER NOT NULL PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, alt TEXT)";
 
 			$username = sqlite_escape_string($_POST['manageruser']);
-			$password = sqlite_escape_string(md5(sha1($_POST['managerpass'])));
+			$password = sqlite_escape_string(sha1(md5($_POST['managerpass'])));
 			$sitename = sqlite_escape_string($_POST['sitename']);
 			$intro    = sqlite_escape_string($_POST['intro']);
 			$aboutme  = sqlite_escape_string($_POST['aboutme']);
@@ -97,7 +99,11 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 		}
 	}
 
-	if (empty($error)) $file = 'install-complete.tpl.php';
+	if (empty($error))
+	{
+		$file = 'install-complete.tpl.php';
+		$_SESSION['loggedin'] = true;
+	}
 	else { $tpl->installerror = $error; $file = 'install.tpl.php'; }
 }
 else $file = 'install.tpl.php';
