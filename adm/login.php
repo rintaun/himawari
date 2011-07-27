@@ -7,23 +7,24 @@ if (!file_exists('../dat/.db'))
 
 session_start();
 
-if ($_SESSION['loggedin'] === true)
+if ((isset($_SESSION['loggedin'])) && ($_SESSION['loggedin'] === true))
 {
 	header('Location: index.php');
 	exit;
 }
+
+$db = sqlite_open('../dat/.db');
+
+$query = "SELECT * FROM config";
+$result = sqlite_query($db, $query);
+while ($row = sqlite_fetch_array($result))
+{
+	$config[$row['opt']] = $row['value'];
+}
+
 $error = false;
 if (isset($_POST['action']))
-{
-	$db = sqlite_open('../dat/.db');
-	
-	$query = "SELECT * FROM config";
-	$result = sqlite_query($db, $query);
-	while ($row = sqlite_fetch_array($result))
-	{
-		$config[$row['opt']] = $row['value'];
-	}
-	
+{	
 	if (($_POST['username'] == $config['username'])	&&
 		(sha1(md5($_POST['password'])) == $config['password']))
 	{
@@ -44,7 +45,7 @@ $tpldir = '../tpl/' . $TEMPLATE . '/';
 $tpl->addPath('template', $tpldir);
 $tpl->tpldir = $tpldir;
 
-$tpl->title = $config['sitename'];
+$tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
 $tpl->error = $error;
 
 $tpl->display('adm/login.tpl.php');
