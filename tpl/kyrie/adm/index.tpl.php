@@ -19,7 +19,13 @@
 				setInterval("checkAnchor()", 300);
 			});
 			var currentAnchor = "a";
-			var introtitle = "<?php echo $this->config['lang_intro']; ?>";
+
+			var originals = {
+				introtitle: '',
+				introtext: '',
+				abouttitle: '',
+				abouttext: ''
+			};
 
 			function disableButton(button){
 				$(button).parent().bind('click', false);
@@ -38,11 +44,12 @@
 					case '#editintro':
 						$('#intro').hide();
 						$('#introedit').show();
+						originals.introtitle=$('#introtitleedit').attr("value");
+						originals.introtext=$('#introtextedit').attr("value");
 						break;
 					case '#editintro-accept':
 						$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
 						disableButton('#introacceptbutton');
-						introtitle = $('#introtitleedit').attr("value");
 						$.ajax({
 							url: '/adm/ajax.php',
 							dataType: 'json',
@@ -63,18 +70,24 @@
 								alert("Edit failed!");
 								$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
 								enableButton('#introacceptbutton');
+								window.location.hash="editintro";
 							}
 						});
+						window.location.hash="";
 						break;
 					case '#editintro-reject':
 						$('#introedit').hide();
 						$('#intro').show();
-						$('#introtitleedit').value = introtitle;
+						$('#introtitleedit').attr("value",originals.introtitle);
+						$('#introtextedit').attr("value",originals.introtext);
+						window.location.hash="";
 						break;
 
 					case '#editabout':
 						$('#about').hide();
 						$('#aboutedit').show();
+						originals.abouttitle=$('#introtitleedit').attr("value");
+						originals.abouttext=$('#introtextedit').attr("value");
 						break;
 					case '#editabout-accept':
 						$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
@@ -100,13 +113,17 @@
 								alert("Edit failed!");
 								$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
 								enableButton('#aboutacceptbutton');
+								window.location.hash="editabout";
 							}
 						});
+						window.location.hash="";
 						break;
-					case '#editintro-reject':
-						$('#introedit').hide();
-						$('#intro').show();
-						$('#introtitleedit').value = introtitle;
+					case '#editabout-reject':
+						$('#aboutedit').hide();
+						$('#about').show();
+						$('#abouttitleedit').attr("value",originals.abouttitle);
+						$('#abouttextedit').attr("value",originals.abouttext);
+						window.location.hash="";
 						break;
 						
 
