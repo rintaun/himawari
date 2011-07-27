@@ -1,4 +1,5 @@
 <?php
+//error_reporting(E_STRICT | E_ALL);
 if (!file_exists('../dat/.db'))
 {
         header('Location: install.php');
@@ -46,13 +47,13 @@ $tpl->addPath('template', $tpldir);
 
 $tpl->tpldir = $tpldir;
 
-$tpl->title = $config['sitename'];
-$tpl->introduction = $config['introduction'];
-$tpl->about = $config['aboutme'];
+$tpl->songlist = (isset($songlist)) ? $songlist : array();
+$tpl->config = (isset($config)) ? $config : array();
+$tpl->links = (isset($links)) ? $links : array();
 
-$tpl->config = $config;
-$tpl->songlist = $songlist;
-$tpl->links = $links;
+$tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
+$tpl->introduction = (isset($config['introduction'])) ? $config['introduction'] : '';
+$tpl->about = (isset($config['aboutme'])) ? $config['aboutme'] : '';
 
 
 /* shamelessly stolen from the Audio-Player wordpress plugin! */
