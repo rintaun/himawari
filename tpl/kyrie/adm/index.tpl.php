@@ -22,11 +22,11 @@
 			var introtitle = "<?php echo $this->config['lang_intro']; ?>";
 
 			function disableButton(button){
-				$(button).parent().click(function() { return false; });
+				$(button).parent().bind('click', false);
 				$(button).parent().css('cursor', 'default');
 			}
 			function enableButton(button){
-				$(button).parent().click(function() {});
+				$(button).parent().unbind('click', false);
 				$(button).parent().css('cursor', 'pointer');
 			}
 			
@@ -40,15 +40,31 @@
 						$('#introedit').show();
 						break;
 					case '#editintro-accept':
-						alert("test");	
 						$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
 						disableButton('#introacceptbutton');
 						introtitle = $('#introtitleedit').attr("value");
-						$('#introtitle').text(introtitle);
-						$('#introedit').hide();
-						$('#intro').show();
-						$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
-						enableButton('#introacceptbutton');
+						$.ajax({
+							url: '/adm/ajax.php',
+							dataType: 'json',
+							data: {
+								action: 'editintro',
+								introtitle: $('#introtitleedit').attr("value"),
+								introtext: $('#introtextedit').attr("value")
+							},
+							success: function(intro){
+								$('#introtitle').text(intro.title);
+								$('#introtext').html(intro.text);
+								$('#introedit').hide();
+								$('#intro').show();
+								$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+								enableButton('#introacceptbutton');
+							},
+							error: function(){
+								alert("Edit failed!");
+								$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+								enableButton('#introacceptbutton');
+							}
+						});
 						break;
 					case '#editintro-reject':
 						$('#introedit').hide();
@@ -57,7 +73,42 @@
 						break;
 
 					case '#editabout':
+						$('#about').hide();
+						$('#aboutedit').show();
 						break;
+					case '#editabout-accept':
+						$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
+						disableButton('#aboutacceptbutton');
+						abouttitle = $('#abouttitleedit').attr("value");
+						$.ajax({
+							url: '/adm/ajax.php',
+							dataType: 'json',
+							data: {
+								action: 'editabout',
+								abouttitle: $('#abouttitleedit').attr("value"),
+								abouttext: $('#abouttextedit').attr("value")
+							},
+							success: function(about){
+								$('#abouttitle').text(about.title);
+								$('#abouttext').html(about.text);
+								$('#aboutedit').hide();
+								$('#about').show();
+								$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+								enableButton('#aboutacceptbutton');
+							},
+							error: function(){
+								alert("Edit failed!");
+								$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+								enableButton('#aboutacceptbutton');
+							}
+						});
+						break;
+					case '#editintro-reject':
+						$('#introedit').hide();
+						$('#intro').show();
+						$('#introtitleedit').value = introtitle;
+						break;
+						
 
 					case '#uploadsong':
 						break;
@@ -113,7 +164,6 @@
 					<?php echo $this->markdown($this->introduction); ?>
 				</div>
 			</section>
-			
 			<section id="introedit" class="box hidden">
 				<hgroup>
 					<h1><input type="text" name="introtitle" id="introtitleedit" value="<?php echo $this->config['lang_intro']; ?>" /></h1>
@@ -144,9 +194,19 @@
 	
 			<section id="about" class="box">
 				<hgroup>
-					<h1><?php $this->eprint($this->config['lang_about']); ?><a href="#editabout"><img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
+					<h1><span id="abouttitle"><?php $this->eprint($this->config['lang_about']); ?></span><a href="#editabout"><img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
 				</hgroup>
-				<?php echo $this->markdown($this->about); ?>
+				<div id="abouttext">
+					<?php echo $this->markdown($this->about); ?>
+				</div>
+			</section>
+			<section id="aboutedit" class="box hidden">
+				<hgroup>
+					<h1><input type="text" name="abouttitle" id="abouttitleedit" value="<?php echo $this->config['lang_about']; ?>" /></h1>
+				</hgroup>
+				<textarea name="abouttext" id="abouttextedit" rows="11"><?php echo trim($this->about); ?></textarea>
+				<a href="#editabout-reject"><img src="<?php echo $this->tpldir?>/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
+				<a href="#editabout-accept"><img src="<?php echo $this->tpldir?>/adm/img/accept.png" id="aboutacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
 			</section>
 		</div>
 
