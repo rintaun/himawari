@@ -13,7 +13,10 @@
 		<!--[if lt IE 9]>
 		<script src="lib/html5.js"></script>
 		<![endif]-->
-		<script type="text/javascript" src="../lib/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery.fileupload.js"></script>
+		
 		<script type="text/javascript">
 			$().ready(function(){
 				setInterval("checkAnchor()", 300);
