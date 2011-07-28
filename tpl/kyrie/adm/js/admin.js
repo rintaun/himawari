@@ -1,3 +1,5 @@
+$('<img>').src(tpldir + "/adm/img/loading.gif");
+
 $().ready(function(){
 	setInterval("checkAnchor()", 300);
 });
@@ -31,7 +33,7 @@ function checkAnchor(){
 			originals.introtext=$('#introtextedit').attr("value");
 			break;
 		case '#editintro-accept':
-			$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
+			$('#introacceptbutton').attr("src",tpldir+"/adm/img/loading.gif");
 			disableButton('#introacceptbutton');
 			$.ajax({
 				url: '/adm/ajax.php',
@@ -46,12 +48,12 @@ function checkAnchor(){
 					$('#introtext').html(intro.text);
 					$('#introedit').hide();
 					$('#intro').show();
-					$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+					$('#introacceptbutton').attr("src",tpldir+"/adm/img/accept.png");
 					enableButton('#introacceptbutton');
 				},
 				error: function(){
 					alert("Edit failed!");
-					$('#introacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+					$('#introacceptbutton').attr("src",tpldir+"/adm/img/accept.png");
 					enableButton('#introacceptbutton');
 					window.location.hash="editintro";
 				}
@@ -73,7 +75,7 @@ function checkAnchor(){
 			originals.abouttext=$('#abouttextedit').attr("value");
 			break;
 		case '#editabout-accept':
-			$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/loading.gif");
+			$('#aboutacceptbutton').attr("src",tpldir+"/adm/img/loading.gif");
 			disableButton('#aboutacceptbutton');
 			abouttitle = $('#abouttitleedit').attr("value");
 			$.ajax({
@@ -89,12 +91,12 @@ function checkAnchor(){
 					$('#abouttext').html(about.text);
 					$('#aboutedit').hide();
 					$('#about').show();
-					$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+					$('#aboutacceptbutton').attr("src",tpldir+"/adm/img/accept.png");
 					enableButton('#aboutacceptbutton');
 				},
 				error: function(){
 					alert("Edit failed!");
-					$('#aboutacceptbutton').attr("src","<?php echo $this->tpldir?>/adm/img/accept.png");
+					$('#aboutacceptbutton').attr("src",tpldir+"/adm/img/accept.png");
 					enableButton('#aboutacceptbutton');
 					window.location.hash="editabout";
 				}
