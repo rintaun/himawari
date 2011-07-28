@@ -57,11 +57,10 @@
 						
 				<section id="songs" class="box">
 					<hgroup>
-						<a href="#upload">
-							<img src="<?php echo $this->tpldir?>/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" />
-						</a>
-						
-						<h1><?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
+						<h1>
+							<a href="#upload"><img src="<?php echo $this->tpldir?>/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" /></a>
+							<?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a>
+						</h1>
 					</hgroup>
 					<?php foreach ($this->songlist AS $num => $entry): ?>
 						<h2><?php echo $this->eprint($entry['artist']); ?> - <?php echo $this->eprint($entry['title']); ?></h2>
