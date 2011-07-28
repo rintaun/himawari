@@ -28,8 +28,8 @@
 			
 			<nav id="sidebar">
 				<h1>Links</h1>
-				<h2><a href="#addlink">Add a Link <img src="<?php echo $this->tpldir?>/adm/img/add.png" width="16" height="16" alt="Add a Link" class="inlineicon" /></a></h2>
-				<h2><a href="#editlinks">Edit Links <img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="16" height="16" alt="Edit Links" class="inlineicon" /></a></h2>
+				<h2><a href="#addlink">Add a Link <img src="<?php echo $this->tpldir?>/adm/img/add.png" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
+				<h2><a href="#editlinks">Edit Links <img src="<?php echo $this->tpldir?>/adm/img/edit.png" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
 				<?php if (!empty($this->links)): ?>
 					<?php foreach ($this->links AS $entry): ?>
 						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>"><?php echo $this->eprint($entry['name']); ?></a></h2>
