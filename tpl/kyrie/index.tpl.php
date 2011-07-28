@@ -64,11 +64,11 @@
 		</div>
 		
 		<?php if (!empty($this->songlist)): ?>
-		<script type="text/javascript">
-			<?php foreach ($this->songlist AS $num => $entry): ?>
-				AudioPlayer.embed("audioplayer_<?php echo $num; ?>", {soundFile:"<?php echo $entry['url']; ?>"});
-			<?php endforeach; ?>
-		</script>
+			<script type="text/javascript">
+				<?php foreach ($this->songlist AS $num => $entry): ?>
+					AudioPlayer.embed("audioplayer_<?php echo $num; ?>", {soundFile:"<?php echo $entry['url']; ?>"});
+				<?php endforeach; ?>
+			</script>
 		<?php endif; ?>
 	</body>
 </html>
