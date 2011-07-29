@@ -92,7 +92,7 @@
 			</footer>
 		</div>
 		
-		<?php if (isset($this->songlist)): ?>
+		<?php if (!empty($this->songlist)): ?>
 			<script type="text/javascript">
 				<?php foreach ($this->songlist AS $num => $entry): ?>
 					AudioPlayer.embed("audioplayer_<?php echo $num; ?>", {soundFile:"<?php echo $entry['url']; ?>"});
