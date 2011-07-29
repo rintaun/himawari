@@ -3,7 +3,7 @@ html,body,#logo,#logo img {
 	padding:0;
 }
 body {
-	background-image: url(/style/img/bg.png);
+	background-image: url(../../style/img/bg.png);
 }
 
 #container {

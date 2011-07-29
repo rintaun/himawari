@@ -18,16 +18,16 @@
 		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery.fileupload.js"></script>
 		
-		<script type="text/javascript" src="/style/adm/js/admin.js"></script>
+		<script type="text/javascript" src="../style/adm/js/admin.js"></script>
 	</head>
 	<body>
 		<div id="container">
-			<header id="logo"><img src="/style/img/logo.png" alt="<?php echo $this->eprint($this->title); ?>" /></header>
+			<header id="logo"><img src="../style/img/logo.png" alt="<?php echo $this->eprint($this->title); ?>" /></header>
 			
 			<nav id="sidebar">
 				<h1>Links</h1>
-				<h2><a href="#addlink">Add a Link <img src="/style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
-				<h2><a href="#editlinks">Edit Links <img src="/style/adm/img/edit.png" alt="Edit Links" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
+				<h2><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
+				<h2><a href="#editlinks">Edit Links <img src="../style/adm/img/edit.png" alt="Edit Links" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
 				<?php if (!empty($this->links)): ?>
 					<?php foreach ($this->links AS $entry): ?>
 						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>"><?php echo $this->eprint($entry['name']); ?></a></h2>
@@ -38,7 +38,7 @@
 			<div id="content">
 				<section id="intro" class="box">
 					<hgroup>
-						<h1><span id="introtitle"><?php echo $this->eprint($this->config['lang_intro']); ?></span><a href="#editintro"><img src="/style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
+						<h1><span id="introtitle"><?php echo $this->eprint($this->config['lang_intro']); ?></span><a href="#editintro"><img src="../style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
 					</hgroup>
 					<div id="introtext">
 						<?php echo $this->markdown($this->introduction); ?>
@@ -49,15 +49,15 @@
 						<h1><input type="text" name="introtitle" id="introtitleedit" value="<?php echo $this->config['lang_intro']; ?>" /></h1>
 					</hgroup>
 					<textarea name="introtext" id="introtextedit" rows="11"><?php echo trim($this->introduction); ?></textarea>
-					<a href="#editintro-reject"><img src="/style/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
-					<a href="#editintro-accept"><img src="/style/adm/img/accept.png" id="introacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
+					<a href="#editintro-reject"><img src="../style/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
+					<a href="#editintro-accept"><img src="../style/adm/img/accept.png" id="introacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
 				</section>
 						
 				<section id="songs" class="box">
 					<hgroup>
 						<h1>
-							<a href="#upload"><img src="/style/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" /></a>
-							<?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="/style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a>
+							<a href="#upload"><img src="../style/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" /></a>
+							<?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="../style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a>
 						</h1>
 					</hgroup>
 					<?php foreach ($this->songlist AS $num => $entry): ?>
@@ -69,7 +69,7 @@
 				
 				<section id="about" class="box">
 					<hgroup>
-						<h1><span id="abouttitle"><?php $this->eprint($this->config['lang_about']); ?></span><a href="#editabout"><img src="/style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
+						<h1><span id="abouttitle"><?php $this->eprint($this->config['lang_about']); ?></span><a href="#editabout"><img src="../style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a></h1>
 					</hgroup>
 					<div id="abouttext">
 						<?php echo $this->markdown($this->about); ?>
@@ -80,8 +80,8 @@
 						<h1><input type="text" name="abouttitle" id="abouttitleedit" value="<?php echo $this->config['lang_about']; ?>" /></h1>
 					</hgroup>
 					<textarea name="abouttext" id="abouttextedit" rows="11"><?php echo trim($this->about); ?></textarea>
-					<a href="#editabout-reject"><img src="/style/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
-					<a href="#editabout-accept"><img src="/style/adm/img/accept.png" id="aboutacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
+					<a href="#editabout-reject"><img src="../style/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
+					<a href="#editabout-accept"><img src="../style/adm/img/accept.png" id="aboutacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
 				</section>
 			</div>
 			
