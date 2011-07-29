@@ -12,11 +12,7 @@ require_once('../lib/Savant3.php');
 $tpl = new Savant3();
 
 $TEMPLATE = 'kyrie';
-
-$tpldir = '../tpl/' . $TEMPLATE . '/';
-
-$tpl->addPath('template', $tpldir);
-$tpl->tpldir = $tpldir;
+$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
 
 $tpl->manageruser = "";
 $tpl->managerpass = "";

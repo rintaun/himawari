@@ -35,15 +35,11 @@ if (isset($_POST['action']))
 	else $error = true;
 }
 
+$TEMPLATE = 'kyrie';
+$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
 
 require_once('../lib/Savant3.php');
 $tpl = new Savant3();
-
-$TEMPLATE = 'kyrie';
-$tpldir = '../tpl/' . $TEMPLATE . '/';
-
-$tpl->addPath('template', $tpldir);
-$tpl->tpldir = $tpldir;
 
 $tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
 $tpl->error = $error;

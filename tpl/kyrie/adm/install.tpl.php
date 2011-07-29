@@ -4,14 +4,14 @@
 		<title>Himawari Installer</title>
 
 		<meta charset="utf-8" />
-		<link rel="stylesheet" href="<?php echo $this->tpldir?>style.css" />
+		<link rel="stylesheet" href="../style/style.css" />
 		<!--[if lt IE 9]>
 			<script src="../lib/html5.js"></script>
 		<![endif]-->
 	</head>
-	<body style="background-image: url(<?php echo $this->tpldir?>img/bg.png);">
+	<body style="background-image: url(../style/img/bg.png);">
 		<header>
-			<img src="<?php echo $this->tpldir?>img/logo.png" alt="Himawari" />
+			<img src="../style/img/logo.png" alt="Himawari" />
 		</header>	
 
 		<div id="content">
