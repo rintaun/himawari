@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery.fileupload.js"></script>
 		
-		<script type="text/javascript" src="<?php echo $this->tpldir?>js/admin.js"></script>
+		<script type="text/javascript" src="<?php echo $this->tpldir?>adm/js/admin.js"></script>
 	</head>
 	<body style="background-image: url(<?php echo $this->tpldir?>img/bg.png);">
 		<div id="container">

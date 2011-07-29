@@ -1,4 +1,4 @@
-$('<img>').src(tpldir + "/adm/img/loading.gif");
+$('<img>').attr("src", tpldir + "/adm/img/loading.gif");
 
 $().ready(function(){
 	setInterval("checkAnchor()", 300);
