@@ -2,6 +2,9 @@ html,body,#logo,#logo img {
 	margin:0;
 	padding:0;
 }
+body {
+	background-image: url(/style/img/bg.png);
+}
 
 #container {
 	width:800px;

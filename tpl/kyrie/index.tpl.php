@@ -4,7 +4,7 @@
 		<title><?php echo $this->eprint($this->title); ?></title>
 		
 		<meta charset="utf-8" />
-		<link rel="stylesheet" href="<?php echo $this->tpldir?>style.css" />
+		<link rel="stylesheet" href="style/style.css" />
 		
 		<?php if (!empty($this->songlist)): ?>
 			<script type="text/javascript" src="lib/swfobject.js"></script>
@@ -16,9 +16,9 @@
 			<script src="lib/html5.js"></script>
 		<![endif]-->
 	</head>
-	<body style="background-image: url(<?php echo $this->tpldir?>img/bg.png);">
+	<body>
 		<div id="container">
-			<header id="logo"><img src="<?php echo $this->tpldir?>img/logo.png" alt="<?php echo $this->eprint($this->title); ?>" /></header>
+			<header id="logo"><img src="style/img/logo.png" alt="<?php echo $this->eprint($this->title); ?>" /></header>
 			
 			<nav id="sidebar">
 				<?php if (!empty($this->links)): ?>

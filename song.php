@@ -1,3 +1,2 @@
 <?php
-header('Location: dat/SigurRos-Olsenolsen.mp3');
-
+print_r($_GET);
