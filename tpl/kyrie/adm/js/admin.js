@@ -36,7 +36,7 @@ function checkAnchor(){
 			$('#introacceptbutton').attr("src","../style/adm/img/loading.gif");
 			disableButton('#introacceptbutton');
 			$.ajax({
-				url: '/adm/ajax.php',
+				url: 'ajax.php',
 				dataType: 'json',
 				data: {
 					action: 'editintro',
@@ -79,7 +79,7 @@ function checkAnchor(){
 			disableButton('#aboutacceptbutton');
 			abouttitle = $('#abouttitleedit').attr("value");
 			$.ajax({
-				url: '/adm/ajax.php',
+				url: 'ajax.php',
 				dataType: 'json',
 				data: {
 					action: 'editabout',
