@@ -3,7 +3,7 @@ if (!file_exists('../dat/.db')) die('{}');
 
 session_start();
 
-if ((isset($_SESSION['loggedin'])) && ($_SESSION['loggedin'] !== true)) die('{}');
+if ((!isset($_SESSION['loggedin'])) || ($_SESSION['loggedin'] !== true)) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");
 if (empty($_GET)) die('{}');
