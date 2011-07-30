@@ -44,6 +44,10 @@ function checkAnchor(){
 					introtext: $('#introtextedit').attr("value")
 				},
 				success: function(intro){
+					if ($.isEmptyObject(intro)){
+						this.error();
+						return;
+					}
 					$('#introtitle').text(intro.title);
 					$('#introtext').html(intro.text);
 					$('#introedit').hide();
@@ -87,6 +91,10 @@ function checkAnchor(){
 					abouttext: $('#abouttextedit').attr("value")
 				},
 				success: function(about){
+					if ($.isEmptyObject(about)){
+						this.error();
+						return;
+					}
 					$('#abouttitle').text(about.title);
 					$('#abouttext').html(about.text);
 					$('#aboutedit').hide();
@@ -118,10 +126,48 @@ function checkAnchor(){
 			break;
 		//case '#removesong':
 		//	break;
-		
+		/*
+		 * 	
+		 */
 		case '#addlink':
+			if ($('#addlinkform').attr("id")) return;
+			$('#addlink').after('<h2 id="addlinkform"><label>Name:<br /><input type="text" name="newlinkname" id="newlinkname" /></label><br /><label>Title Text:<br /><input type="text" name="newlinktitle" id="newlinktitle" /></label><br /><label>URL:<br /><input type="url" name="newlinkurl" id="newlinkurl" /></label><br /><a href="#addlink-accept"><img src="../style/adm/img/accept.png" alt="Add Link" width="20" height="20" id="linkaccept" /></a><a href="#addlink-reject"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
+			break;
+		case '#addlink-accept':
+			$('#linkaccept').attr("src","../style/adm/img/loading.gif");
+			disableButton('#linkaccept');
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'addlink',
+					linkname: $('#newlinkname').attr("value"),
+					linktitle: $('#newlinktitle').attr("value"),
+					linkurl: $('#newlinkurl').attr("value")
+				},
+				success: function(link){
+					if ($.isEmptyObject(link)){
+						this.error();
+						return;
+					}
+					$('#addlinkform').remove();
+					$('#sidebar').append('<h2><a href="'+link.url+'" title="'+link.title+'" class="link">'+link.name+'</a></h2>')
+					window.location.hash="";
+				},
+				error: function(){
+					alert("Link add failed!");
+					$('#linkaccept').attr("src","../style/adm/img/accept.png");
+					enableButton('#linkaccept');
+					window.location.hash="addlink";
+				}
+			});
+			break;
+		case '#addlink-reject':
+			$('#addlinkform').remove();
+			window.location.hash="";
 			break;
 		case '#editlinks':
+			alert($('.link'));
 			break;
 		//case '#removelink':
 		//	break;

@@ -172,6 +172,6 @@ img.inlineicon {
 	display: none;
 }
 
-input, textarea {
+#content input, textarea {
 	width: 565px;
 }

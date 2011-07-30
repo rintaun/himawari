@@ -11,5 +11,5 @@ RewriteEngine on
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule style/(.*) /style.php?a=$1 [L]
-RewriteRule song/(.*)  /song.php?a=$1  [L]
+RewriteRule style/(.*) /style.php?a=$1 [NC,L]
+RewriteRule song/(.*)  /song.php?a=$1  [NC,L]

@@ -56,7 +56,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 		{
 			$queries[] = "CREATE TABLE config (opt TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL)";
 			$queries[] = "CREATE TABLE songs (id INTEGER NOT NULL PRIMARY KEY, artist TEXT NOT NULL, title TEXT NOT NULL, descr TEXT NOT NULL, fname TEXT NOT NULL)";
-			$queries[] = "CREATE TABLE links (id INTEGER NOT NULL PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, alt TEXT)";
+			$queries[] = "CREATE TABLE links (id INTEGER NOT NULL PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, title TEXT)";
 
 			$username = sqlite_escape_string($_POST['manageruser']);
 			$password = sqlite_escape_string(sha1(md5($_POST['managerpass'])));

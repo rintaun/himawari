@@ -12,9 +12,7 @@
 			<script type="text/javascript">AudioPlayer.setup("lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script>
 		<?php endif; ?> 
 		
-		<!--[if lt IE 9]>
-			<script src="lib/html5.js"></script>
-		<![endif]-->
+		<!--[if lt IE 9]><script src="lib/html5.js"></script><![endif]-->
 	</head>
 	<body>
 		<div id="container">

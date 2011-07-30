@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<title><?php echo $this->eprint($this->title); ?></title>
-
+		
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="../style/style.css" />
 		
@@ -10,9 +10,7 @@
 		<script type="text/javascript" src="../lib/audio-player/audio-player-uncompressed.js"></script>
 		<script type="text/javascript">AudioPlayer.setup("../lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script>
 		 
-		<!--[if lt IE 9]>
-		<script src="../lib/html5.js"></script>
-		<![endif]-->
+		<!--[if lt IE 9]><script src="../lib/html5.js"></script><![endif]-->
 		
 		<script type="text/javascript" src="../lib/jquery/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
@@ -26,11 +24,11 @@
 			
 			<nav id="sidebar">
 				<h1>Links</h1>
-				<h2><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
-				<h2><a href="#editlinks">Edit Links <img src="../style/adm/img/edit.png" alt="Edit Links" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
+				<h2 id="addlink"><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
+				<h2 id="editlink"><a href="#editlinks">Edit Links <img src="../style/adm/img/edit.png" alt="Edit Links" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
 				<?php if (!empty($this->links)): ?>
 					<?php foreach ($this->links AS $entry): ?>
-						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>"><?php echo $this->eprint($entry['name']); ?></a></h2>
+						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>" class="link"><?php echo $this->eprint($entry['name']); ?></a></h2>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</nav>
@@ -52,7 +50,7 @@
 					<a href="#editintro-reject"><img src="../style/adm/img/reject.png" width="30" height="30" alt="Reject Changes" class="icon" /></a>
 					<a href="#editintro-accept"><img src="../style/adm/img/accept.png" id="introacceptbutton" width="30" height="30" alt="Accept Changes" class="icon" /></a>
 				</section>
-						
+				
 				<section id="songs" class="box">
 					<hgroup>
 						<h1>

@@ -13,19 +13,23 @@ $db = sqlite_open('../dat/.db');
 switch ($_GET['action'])
 {
 	case 'editintro':
-		$queries[] = "UPDATE config SET value='".$_GET['introtext']."' WHERE opt='introduction'";
-		$queries[] = "UPDATE config SET value='".$_GET['introtitle']."' WHERE opt='lang_intro'";
+		$text = sqlite_escape_string($_GET['introtext']);
+		$title = sqlite_escape_string($_GET['introtitle']);
+		$queries[] = "UPDATE config SET value='{$text}' WHERE opt='introduction'";
+		$queries[] = "UPDATE config SET value='{$title}' WHERE opt='lang_intro'";
 		foreach ($queries AS $sql)
 		{
-			//sqlite_exec($db, $sql);
+			sqlite_exec($db, $sql) or die('{}');
 		}
 		die('{"title":"'.$_GET['introtitle'].'", "text":"'.addcslashes(Markdown($_GET['introtext']),"\"\r\n").'"}');
 	case 'editabout':
-		$queries[] = "UPDATE config SET value='".$_GET['introtext']."' WHERE opt='aboutme'";
-		$queries[] = "UPDATE config SET value='".$_GET['introtitle']."' WHERE opt='lang_about'";
+		$text = sqlite_escape_string($_GET['abouttext']);
+		$title = sqlite_escape_string($_GET['abouttitle']);
+		$queries[] = "UPDATE config SET value='{$text}' WHERE opt='aboutme'";
+		$queries[] = "UPDATE config SET value='{$title}' WHERE opt='lang_about'";
 		foreach ($queries AS $sql)
 		{
-			//sqlite_exec($db, $sql);
+			sqlite_exec($db, $sql) or die('{}');
 		}
 		die('{"title":"'.$_GET['abouttitle'].'", "text":"'.addcslashes(Markdown($_GET['abouttext']),"\"\r\n").'"}');
 		break;
@@ -43,7 +47,13 @@ switch ($_GET['action'])
 	//	break;
 	
 	case 'addlink':
+		$name = sqlite_escape_string($_GET['linkname']);
+		$title = sqlite_escape_string($_GET['linktitle']);
+		$url = sqlite_escape_string($_GET['linkurl']);
 		// this and editlinks are next, i think. should be relatively straightforward.
+		$query = "INSERT INTO links (url, name, alt) VALUES ('{$url}', '{$name}', '{$title}')";
+		sqlite_exec($db, $query) or die('{}');
+		die('{"name":"'.addslashes($_GET['linkname']).'", "title":"'.addslashes($_GET['linktitle']).'", "url":"'.addslashes($_GET['linkurl']).'"}');
 		break;
 	case 'editlinks':
 		break;
