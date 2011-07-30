@@ -1,0 +1,33 @@
+--------------
+Core features:
+--------------
+[x] Display
+	[x] Overall design implementation
+	[x] Links
+	[x] Songs
+	[x] Static text
+[ ] "Static"-ish text/data
+	[x] Introduction
+	[x] About Me
+	[ ] Site name
+	[ ] Theme selection
+[ ] Links
+	[x] Add
+	[ ] Edit
+	[ ] Delete
+[ ] Songs
+	[ ] Upload
+	[ ] Edit
+	[ ] Archive
+	[ ] Delete
+	[ ] Track plays / downloads
+
+-------------
+Future ideas:
+-------------
+[ ] Add download button to music player
+[ ] Add Markdown explanation to management panel
+[ ] Track clicks for links
+[ ] Write template design docs (tpl/README)
+[ ] Multiple pages
+[ ] More...
