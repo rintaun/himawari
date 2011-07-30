@@ -24,7 +24,12 @@ function enableButton(button){
 function checkAnchor(){
 	if(currentAnchor == document.location.hash) return;
 	currentAnchor = document.location.hash;
-	switch (currentAnchor)
+	
+	var anchor;
+	if (anchor = currentAnchor.split(':'))
+		id = (anchor[1]) ? anchor[1] : null, anchor = anchor[0];
+		
+	switch (anchor)
 	{
 		case '#editintro':
 			$('#intro').hide();
@@ -124,8 +129,8 @@ function checkAnchor(){
 			break;
 		case '#editsongs':
 			break;
-		//case '#removesong':
-		//	break;
+		case '#removesong':
+			break;
 		/*
 		 * 	
 		 */
@@ -169,8 +174,32 @@ function checkAnchor(){
 		case '#editlinks':
 			alert($('.link'));
 			break;
-		//case '#removelink':
-		//	break;
+		case '#removelink':
+			$('#linkremove'+id).attr("src","../style/adm/img/loading.gif");
+			disableButton('#linkremove'+id);
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'removelink',
+					id: id
+				},
+				success: function(link){
+					if ($.isEmptyObject(link)){
+						this.error();
+						return;
+					}
+					$('#link'+link.id).remove();
+					window.location.hash="";
+				},
+				error: function(){
+					alert("Link removal failed!");
+					$('#linkremove'+id).attr("src","../style/adm/img/remove.png");
+					enableButton('#linkremove'+id);
+					window.location.hash="";
+				}
+			});
+			break;
 		
 		case '#':
 		case '':

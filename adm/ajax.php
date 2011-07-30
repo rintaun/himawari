@@ -43,8 +43,8 @@ switch ($_GET['action'])
 	case 'editsongs':
 		//not really sure what i'm doing with this yet...
 		break;
-	//case 'removesong':
-	//	break;
+	case 'removesong':
+		break;
 	
 	case 'addlink':
 		$name = sqlite_escape_string($_GET['linkname']);
@@ -57,8 +57,12 @@ switch ($_GET['action'])
 		break;
 	case 'editlinks':
 		break;
-	//case 'removelink':
-	//	break;
+	case 'removelink':
+		$id = sqlite_escape_string($_GET['id']);
+		$query = "DELETE FROM links WHERE id='{$id}'";
+		sqlite_exec($db, $query) or die('{}');
+		die('{"id":"'.$_GET['id'].'"}');
+		break;
 	
 	default: die('{}');
 	
