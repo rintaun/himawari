@@ -69,6 +69,16 @@ nav a:hover {
 	text-shadow: #ACACAC 0px 0px 3px;
 }
 
+a {
+	color:inherit;
+	text-decoration:underline;
+	opacity:0.5;
+}
+a:hover {
+	opacity: 0.9;
+	text-shadow: #ACACAC 0px 0px 3px;
+}
+
 #content {
 	/* float:right; */
 	width:580px;

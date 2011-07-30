@@ -36,10 +36,10 @@ if (isset($_POST['action']))
 }
 
 $TEMPLATE = 'kyrie';
-$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
 
 require_once('../lib/Savant3.php');
 $tpl = new Savant3();
+$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
 
 $tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
 $tpl->error = $error;
