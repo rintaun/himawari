@@ -201,8 +201,7 @@ function checkAnchor(){
 						this.error();
 						return;
 					}
-					$('#link'+link.id).children('.link').attr("href",link.url).attr("title",link.title).text(link.text);
-					$('#link'+link.id).slideDown();
+					$('#link'+link.id).slideDown().children('.link').attr("href",link.url).attr("title",link.title).text(link.name);
 					$('#editlinkform'+link.id).slideUp(function(){$(this).remove();})
 					window.location.hash="";
 				},
