@@ -22,7 +22,7 @@
 				<?php if (!empty($this->links)): ?>
 					<h1>Links</h1>
 					<?php foreach ($this->links AS $entry): ?>
-						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>"><?php echo $this->eprint($entry['name']); ?></a></h2>
+						<h2><a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['title']); ?>"><?php echo $this->eprint($entry['name']); ?></a></h2>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</nav>

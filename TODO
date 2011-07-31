@@ -11,10 +11,10 @@ Core features:
 	[x] About Me
 	[ ] Site name
 	[ ] Theme selection
-[ ] Links
+[x] Links
 	[x] Add
-	[ ] Edit
-	[ ] Delete
+	[x] Edit
+	[x] Delete
 [ ] Songs
 	[ ] Upload
 	[ ] Edit

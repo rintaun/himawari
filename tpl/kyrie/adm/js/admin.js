@@ -131,12 +131,11 @@ function checkAnchor(){
 			break;
 		case '#removesong':
 			break;
-		/*
-		 * 	
-		 */
+		
 		case '#addlink':
 			if ($('#addlinkform').attr("id")) return;
-			$('#addlink').after('<h2 id="addlinkform"><label>Name:<br /><input type="text" name="newlinkname" id="newlinkname" /></label><br /><label>Title Text:<br /><input type="text" name="newlinktitle" id="newlinktitle" /></label><br /><label>URL:<br /><input type="url" name="newlinkurl" id="newlinkurl" /></label><br /><a href="#addlink-accept"><img src="../style/adm/img/accept.png" alt="Add Link" width="20" height="20" id="linkaccept" /></a><a href="#addlink-reject"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
+			$('#addlink').after('<h2 id="addlinkform" style="display:none;"><label>Name:<br /><input type="text" name="newlinkname" id="newlinkname" /></label><br /><label>Title Text:<br /><input type="text" name="newlinktitle" id="newlinktitle" /></label><br /><label>URL:<br /><input type="url" name="newlinkurl" id="newlinkurl" /></label><br /><a href="#addlink-accept"><img src="../style/adm/img/accept.png" alt="Add Link" width="20" height="20" id="linkaccept" /></a><a href="#addlink-reject"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
+			$('#addlinkform').slideDown();
 			break;
 		case '#addlink-accept':
 			$('#linkaccept').attr("src","../style/adm/img/loading.gif");
@@ -155,8 +154,8 @@ function checkAnchor(){
 						this.error();
 						return;
 					}
-					$('#addlinkform').remove();
-					$('#sidebar').append('<h2><a href="'+link.url+'" title="'+link.title+'" class="link">'+link.name+'</a></h2>')
+					$('#addlinkform').slideUp(function(){$(this).remove();})
+					$('#sidebar').append('<h2 id="link'+link.id+'"><span style="float:left"><a href="#editlink:'+link.id+'"><img src="../style/adm/img/edit.png" alt="Edit Link" width="16" height="16" title="Edit Link" class="inlineicon" id="linkedit'+link.id+'" /></a><a href="#removelink:'+link.id+'"><img src="../style/adm/img/remove.png" alt="Remove Link" width="16" height="16" title="Remove Link" class="inlineicon" id="linkremove'+link.id+'" /></a></span><a href="'+link.url+'" title="'+link.title+'" class="link">'+link.name+'</a></h2>')
 					window.location.hash="";
 				},
 				error: function(){
@@ -168,11 +167,57 @@ function checkAnchor(){
 			});
 			break;
 		case '#addlink-reject':
-			$('#addlinkform').remove();
+			$('#addlinkform').slideUp(function(){$(this).remove()});
 			window.location.hash="";
 			break;
-		case '#editlinks':
-			alert($('.link'));
+		case '#editlink':
+			var link = $('#link'+id);
+			var id = link.attr("id").substr(4);
+			if ($('#editlinkform'+id).attr("id")) return;
+			var url = link.children('.link').attr("href");
+			var title = link.children('.link').attr("title");
+			var name = link.children('.link').text();
+				
+			link.after('<h2 id="editlinkform'+id+'" style="display:none;"><label>Name:<br /><input type="text" name="editlinkname'+id+'" id="editlinkname'+id+'" value="'+name+'" /></label><br /><label>Title Text:<br /><input type="text" name="editlinktitle'+id+'" id="editlinktitle'+id+'" value="'+title+'" /></label><br /><label>URL:<br /><input type="url" name="editlinkurl'+id+'" id="editlinkurl'+id+'" value="'+url+'" /></label><br /><a href="#editlink-accept:'+id+'"><img src="../style/adm/img/accept.png" alt="Accept Edits" width="20" height="20" id="linkeditaccept'+id+'" /></a><a href="#editlink-reject:'+id+'"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
+
+			$('#link'+id).slideUp();
+			$('#editlinkform'+id).slideDown();
+			break;
+		case '#editlink-accept':
+			$('#linkeditaccept'+id).attr("src","../style/adm/img/loading.gif");
+			disableButton('#linkeditaccept'+id);
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'editlink',
+					id: id,
+					linkname: $('#editlinkname'+id).attr("value"),
+					linktitle: $('#editlinktitle'+id).attr("value"),
+					linkurl: $('#editlinkurl'+id).attr("value")
+				},
+				success: function(link){
+					if ($.isEmptyObject(link)){
+						this.error();
+						return;
+					}
+					$('#link'+link.id).children('.link').attr("href",link.url).attr("title",link.title).text(link.text);
+					$('#link'+link.id).slideDown();
+					$('#editlinkform'+link.id).slideUp(function(){$(this).remove();})
+					window.location.hash="";
+				},
+				error: function(){
+					alert("Link edit failed!");
+					$('#linkeditaccept'+id).attr("src","../style/adm/img/accept.png");
+					enableButton('#linkeditaccept'+id);
+					window.location.hash="editlink:"+id;
+				}
+			});
+			break;
+		case '#editlink-reject':
+			$('#editlinkform'+id).slideUp(function(){$(this).remove()});
+			$('#link'+id).slideDown();
+			window.location.hash="";
 			break;
 		case '#removelink':
 			$('#linkremove'+id).attr("src","../style/adm/img/loading.gif");
@@ -189,7 +234,7 @@ function checkAnchor(){
 						this.error();
 						return;
 					}
-					$('#link'+link.id).remove();
+					$('#link'+link.id).slideUp(function(){$(this).remove();});
 					window.location.hash="";
 				},
 				error: function(){

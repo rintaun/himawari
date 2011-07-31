@@ -3,6 +3,8 @@ if (!file_exists('../dat/.db')) die('{}');
 
 session_start();
 
+header('Content-Type: application/json');
+
 if ((!isset($_SESSION['loggedin'])) || ($_SESSION['loggedin'] !== true)) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");
@@ -51,11 +53,23 @@ switch ($_GET['action'])
 		$title = sqlite_escape_string($_GET['linktitle']);
 		$url = sqlite_escape_string($_GET['linkurl']);
 		// this and editlinks are next, i think. should be relatively straightforward.
-		$query = "INSERT INTO links (url, name, alt) VALUES ('{$url}', '{$name}', '{$title}')";
+		$query = "INSERT INTO links (url, name, title) VALUES ('{$url}', '{$name}', '{$title}')";
 		sqlite_exec($db, $query) or die('{}');
-		die('{"name":"'.addslashes($_GET['linkname']).'", "title":"'.addslashes($_GET['linktitle']).'", "url":"'.addslashes($_GET['linkurl']).'"}');
+		
+		$query = "SELECT last_insert_rowid()";
+		$result = sqlite_query($db, $query) or die('{}');
+		$id = sqlite_fetch_single($result) or die('{}');
+		die('{"id":"'.$id.'", "name":"'.addslashes($_GET['linkname']).'", "title":"'.addslashes($_GET['linktitle']).'", "url":"'.addslashes($_GET['linkurl']).'"}');
 		break;
-	case 'editlinks':
+	case 'editlink':
+		$name = sqlite_escape_string($_GET['linkname']);
+		$title = sqlite_escape_string($_GET['linktitle']);
+		$url = sqlite_escape_string($_GET['linkurl']);
+		$id = sqlite_escape_string($_GET['id']);
+		
+		$query = "UPDATE links SET url='{$url}', title='{$title}', name='{$name}' WHERE id='{$id}'";
+		sqlite_exec($db, $query, $error) or die($query . " " . $error);
+		die('{"id":"'.$id.'", "name":"'.addslashes($_GET['linkname']).'", "title":"'.addslashes($_GET['linktitle']).'", "url":"'.addslashes($_GET['linkurl']).'"}');
 		break;
 	case 'removelink':
 		$id = sqlite_escape_string($_GET['id']);

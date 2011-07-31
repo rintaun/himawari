@@ -25,12 +25,11 @@
 			<nav id="sidebar">
 				<h1>Links</h1>
 				<h2 id="addlink"><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
-				<h2 id="editlink"><a href="#editlinks">Edit Links <img src="../style/adm/img/edit.png" alt="Edit Links" width="16" height="16" title="Edit Links" class="inlineicon" /></a></h2>
 				<?php if (!empty($this->links)): ?>
 					<?php foreach ($this->links AS $entry): ?>
 						<h2 id="link<?php echo $this->eprint($entry['id']); ?>">
-							<span style="float:left"><a href="#removelink:<?php $this->eprint($entry['id']); ?>"><img src="../style/adm/img/remove.png" alt="Remove Link" width="16" height="16" title="Edit Links" class="inlineicon" id="linkremove<?php echo $this->eprint($entry['id']); ?>" /></a></span>
-							<a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['alt']); ?>" class="link"><?php echo $this->eprint($entry['name']); ?></a>
+							<span style="float:left"><a href="#editlink:<?php $this->eprint($entry['id']); ?>"><img src="../style/adm/img/edit.png" alt="Edit Link" width="16" height="16" title="Edit Link" class="inlineicon" id="linkedit<?php echo $this->eprint($entry['id']); ?>" /></a><a href="#removelink:<?php $this->eprint($entry['id']); ?>"><img src="../style/adm/img/remove.png" alt="Remove Link" width="16" height="16" title="Remove Link" class="inlineicon" id="linkremove<?php echo $this->eprint($entry['id']); ?>" /></a></span>
+							<a href="<?php echo $this->eprint($entry['url']); ?>" title="<?php echo $this->eprint($entry['title']); ?>" class="link"><?php echo $this->eprint($entry['name']); ?></a>
 						</h2>
 					<?php endforeach; ?>
 				<?php endif; ?>
