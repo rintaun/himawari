@@ -1,10 +1,14 @@
 <?php
+header('Vary: Accept');
+if (isset($_SERVER['HTTP_ACCEPT']) &&
+	(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+	header('Content-type: application/json');
+} else {
+	header('Content-type: text/plain');
+}
+
 if (!file_exists('../dat/.db')) die('{}');
-
 session_start();
-
-header('Content-Type: application/json');
-
 if ((!isset($_SESSION['loggedin'])) || ($_SESSION['loggedin'] !== true)) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");

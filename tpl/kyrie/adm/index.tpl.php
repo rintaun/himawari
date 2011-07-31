@@ -5,7 +5,7 @@
 		
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="../style/style.css" />
-		
+				
 		<script type="text/javascript" src="../lib/swfobject.js"></script>
 		<script type="text/javascript" src="../lib/audio-player/audio-player-uncompressed.js"></script>
 		<script type="text/javascript">AudioPlayer.setup("../lib/audio-player/player.swf",{width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"dddddd",text:"666666",leftbg:"eeeeee",lefticon:"666666",volslider:"666666",voltrack:"FFFFFF",rightbg:"cccccc",rightbghover:"999999",righticon:"666666",righticonhover:"ffffff",track:"FFFFFF",loader:"666666",border:"666666",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script>
@@ -15,6 +15,71 @@
 		<script type="text/javascript" src="../lib/jquery/jquery-1.6.2.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery.fileupload.js"></script>
+		
+		<script id="template-upload" type="text/x-jquery-tmpl">
+    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+        <td class="preview"></td>
+        <td class="name">${name}</td>
+        <td class="size">${sizef}</td>
+        {{if error}}
+            <td class="error" colspan="2">Error:
+                {{if error === 'maxFileSize'}}File is too big
+                {{else error === 'minFileSize'}}File is too small
+                {{else error === 'acceptFileTypes'}}Filetype not allowed
+                {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+                {{else}}${error}
+                {{/if}}
+            </td>
+        {{else}}
+            <td class="progress"><div></div></td>
+            <td class="start"><button>Start</button></td>
+        {{/if}}
+        <td class="cancel"><button>Cancel</button></td>
+    </tr>
+		</script>
+		<script id="template-download" type="text/x-jquery-tmpl">
+    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+        {{if error}}
+            <td></td>
+            <td class="name">${name}</td>
+            <td class="size">${sizef}</td>
+            <td class="error" colspan="2">Error:
+                {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
+                {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
+                {{else error === 3}}File was only partially uploaded
+                {{else error === 4}}No File was uploaded
+                {{else error === 5}}Missing a temporary folder
+                {{else error === 6}}Failed to write file to disk
+                {{else error === 7}}File upload stopped by extension
+                {{else error === 'maxFileSize'}}File is too big
+                {{else error === 'minFileSize'}}File is too small
+                {{else error === 'acceptFileTypes'}}Filetype not allowed
+                {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+                {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
+                {{else error === 'emptyResult'}}Empty file upload result
+                {{else}}${error}
+                {{/if}}
+            </td>
+        {{else}}
+            <td class="preview">
+                {{if thumbnail_url}}
+                    <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+                {{/if}}
+            </td>
+            <td class="name">
+                <a href="${url}"{{if thumbnail_url}} target="_blank"{{/if}}>${name}</a>
+            </td>
+            <td class="size">${sizef}</td>
+            <td colspan="2"></td>
+        {{/if}}
+        <td class="delete">
+            <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
+        </td>
+    </tr>
+		</script>
+		<script src="//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+		<script src="../lib/jquery/jquery.iframe-transport.js"></script>
+		<script src="../lib/jquery/jquery.fileupload-ui.js"></script>
 		
 		<script type="text/javascript" src="../style/adm/js/admin.js"></script>
 	</head>
@@ -56,10 +121,20 @@
 				<section id="songs" class="box">
 					<hgroup>
 						<h1>
-							<a href="#upload"><img src="../style/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" /></a>
+							<form action="upload.php" method="POST" enctype="multipart/form-data" style="margin:0;padding:0;display:inline;">
+								<label>
+									<img src="../style/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" style="cursor:pointer" />
+					                <input type="file" name="files[]" multiple style="visibility:hidden;width:0;height:0;">
+					            </label>
+					            <button type="submit" class="start">Start upload</button> 
+							</form>
 							<?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="../style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a>
 						</h1>
 					</hgroup>
+					<div class="fileupload-content">
+						<table class="files"></table>
+						<div class="fileupload-progressbar"></div>
+					</div>
 					<?php foreach ($this->songlist AS $num => $entry): ?>
 						<h2><?php echo $this->eprint($entry['artist']); ?> - <?php echo $this->eprint($entry['title']); ?></h2>
 						<?php echo $this->markdown($entry['descr']); ?>
