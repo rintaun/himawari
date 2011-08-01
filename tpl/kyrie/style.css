@@ -108,7 +108,7 @@ section h1 {
 	letter-spacing: 0.5em;
 	text-shadow: #F21947 0px 0px 2px;
 	margin-top: 0;
-	width: 90%;
+	width: 100%;
 }
 section h2 {
 	font-size: 1em;
@@ -184,4 +184,8 @@ img.inlineicon {
 
 #content input, textarea {
 	width: 565px;
+}
+#content input.newsong {
+	width: 274px;
+	display:inline;
 }

@@ -256,30 +256,41 @@ function checkAnchor(){
 }
 
 $(function () {
-    'use strict';
+	'use strict';
+	
+	var setColor = function(p){
+	    var red = p<50 ? 255 : Math.round(256 - (p-50)*5.12);
+	    var green = p>50 ? 255 : Math.round((p)*5.12);
+	    return "rgb(" + red + "," + green + ",0)";
+	}
 
-    // Initialize the jQuery File Upload widget:
-    $('#songs').fileupload();
-
-    // Load existing files:
-    $.getJSON($('#songs form').prop('action'), function (files) {
-        var fu = $('#songs').data('fileupload');
-        fu._adjustMaxNumberOfFiles(-files.length);
-        fu._renderDownload(files)
-            .appendTo($('#songs .files'))
-            .fadeIn(function () {
-                // Fix for IE7 and lower:
-                $(this).show();
-            });
-    });
-
-    // Open download dialogs via iframes,
-    // to prevent aborting current uploads:
-    $('#fileupload .files a:not([target^=_blank])').live('click', function (e) {
-        e.preventDefault();
-        $('<iframe style="display:none;"></iframe>')
-            .prop('src', this.href)
-            .appendTo('body');
-    });
-
+	// Initialize the jQuery File Upload widget:
+	$('#songs').fileupload({
+		dropZone: $('body'),
+		sequentialUploads: true
+	})
+	.bind('fileuploadadd', function(e, data){
+		$.each(data.files, function (index, file) {
+			$('#newsongsprogressbar').before('<h2 style="margin-bottom:2px;">'+file.name+'</h2><div id="blahcontainer" style="padding:0;width:100%;height:10px;border:1px solid #000"><span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="blah"></span></div><input type="text" placeholder="Artist" name="newsongartist'+index+'" id="newsongartist'+index+'" class="newsong"/> - <input type="text" placeholder="Title" name="newsongtitle'+index+'" id="newsongtitle'+index+'" class="newsong"/><br /><textarea name="newsongdesc'+index+'" id="newsongdesc'+index+'" placeholder="Description" rows="7"></textarea><br/><span style="width:100%;text-align:right"><img src="/style/adm/img/accept.png"/></span>');
+		});
+		data.url = 'upload.php';
+		var jqXHR = data.submit();
+	})
+	.bind('fileuploadprogress', function (e, data) {
+		var progress = parseInt(data.loaded / data.total * 100, 10);
+	    $('#blah').css("width", progress+"%").css("background-color", setColor(progress));
+	})
+	.bind('fileuploadprogressall', function(e, data) {
+		var progress = parseInt(data.loaded / data.total * 100, 10);
+	    $('#newsongsprogress').css("width", progress+"%").css("background-color", setColor(progress));
+		if (progress == 100) {
+			$('#newsongsprogressbar').slideUp();
+		}
+		else if ((progress < 100) && ($('#newsongsprogressbar').css("display") == "none")) {
+			$('#newsongsprogressbar').slideDown();
+		}
+	})
+	.bind('fileuploaddone', function(e, data){
+		$('#blahcontainer').slideUp(function(){$(this).remove();});
+	});
 });
