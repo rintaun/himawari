@@ -279,6 +279,7 @@ $(function () {
 			file.progress = $('#songs div:last-child div.progress span')
 			file.editpart = $('#songs div:last-child div.edit');
 			file.head = $('#songs div:last-child h2')
+			file.editpart.hide();
 		});
 	})
 	.bind('fileuploadfail', function(e, data){
@@ -298,8 +299,13 @@ $(function () {
 	.bind('fileuploaddone', function(e, data){
 		var result = $.parseJSON(data.result)[0];
 		if (result.error) {
-			data.files[0].editpart.effect("highlight", {color: "#F00", mode: "hide"}, 500);
-			data.files[0].head.append(' - <span style="color:#F00;">Filetype not supported</span>');
+			data.files[0].head.effect("highlight", {color: "#F00"}, 500);
+			data.files[0].head.append(' - <span style="color:#F00;">Upload failed</span>');
+		}
+		else {
+			data.files[0].head.effect("highlight", {color: "#0F0"}, 500);
+			data.files[0].head.append(' - <span style="color:#0F0;">Upload successful</span>');
+			data.files[0].editpart.slideDown();
 		}
 		data.files[0].progressbar.slideUp(function(){$(this).remove();});
 	});

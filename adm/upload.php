@@ -9,8 +9,9 @@
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
  */
-
-error_reporting(E_ALL | E_STRICT);
+ini_set('memory_limit', '96M');
+ini_set('post_max_size', '64M');
+ini_set('upload_max_filesize', '64M');
 
 class UploadHandler
 {
