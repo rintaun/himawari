@@ -269,7 +269,7 @@ $(function () {
 		dropZone: $('body'),
 		sequentialUploads: true,
 		autoUpload: false,
-		url: 'ajax.php?action=uploadsong'
+		url: 'upload.php',
 	})
 	.bind('fileuploadadd', function(e, data){
 		$.each(data.files, function (index, file) {
@@ -288,7 +288,7 @@ $(function () {
 	})
 	.bind('fileuploadsend', function(e, data){
 		//alert(data.files[0].name);
-		if (!data.files[0].name.match(new RegExp(/\.(mp3|mp4|m4a|ogg|wav)$/i))) return false;
+		//if (!data.files[0].name.match(new RegExp(/\.(mp3|mp4|m4a|ogg|wav)$/i))) return false;
 		return true;
 	})
 	.bind('fileuploadprogress', function (e, data) {
@@ -298,7 +298,6 @@ $(function () {
 	.bind('fileuploaddone', function(e, data){
 		var result = $.parseJSON(data.result)[0];
 		if (result.error) {
-			alert(result.error);
 			data.files[0].editpart.effect("highlight", {color: "#F00", mode: "hide"}, 500);
 			data.files[0].head.append(' - <span style="color:#F00;">Filetype not supported</span>');
 		}
