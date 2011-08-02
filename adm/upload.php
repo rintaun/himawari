@@ -26,7 +26,7 @@ class UploadHandler
             // take precedence over the following max_file_size setting:
             'max_file_size' => null,
             'min_file_size' => 1,
-            'accept_file_types' => '/(\.|\/)(mp3|ogg|wav)$/i',
+            'accept_file_types' => '/(\.|\/)(mp3|mpeg|mp4|m4a|ogg|wav|x-wav)$/i',
             'max_number_of_files' => null,
             'discard_aborted_uploads' => true,
             'image_versions' => array(
@@ -136,7 +136,7 @@ class UploadHandler
             return $error;
         }
         if (!preg_match($this->options['accept_file_types'], $file->name)) {
-            return 'acceptFileTypes';
+            return print_r($file, true);
         }
         if ($uploaded_file && is_uploaded_file($uploaded_file)) {
             $file_size = filesize($uploaded_file);
@@ -217,8 +217,9 @@ class UploadHandler
     }
     
     public function get() {
+    	print_r($_REQUEST);
         $file_name = isset($_REQUEST['file']) ?
-            basename(stripslashes($_REQUEST['file'])) : null; 
+            basename(stripslashes($_REQUEST['files'])) : null; 
         if ($file_name) {
             $info = $this->get_file_object($file_name);
         } else {

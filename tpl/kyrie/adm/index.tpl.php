@@ -60,6 +60,7 @@
 							<form action="upload.php" method="POST" enctype="multipart/form-data" style="margin:0;padding:0;display:inline;">
 								<label>
 									<img src="../style/adm/img/add.png" width="30" height="30" alt="Upload a Song" class="icon" style="cursor:pointer" />
+									<input type="hidden" name="MAX_FILE_SIZE" value="67108864" />
 					                <input type="file" name="files[]" multiple style="visibility:hidden;width:0;height:0;margin:0;padding:0;">
 					            </label> 
 							</form>
@@ -71,9 +72,6 @@
 						<?php echo $this->markdown($entry['descr']); ?>
 						<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
 					<?php endforeach; ?>
-					<div id="newsongs">
-						<div id="newsongsprogressbar" style="display:none;padding:0;width:100%;height:10px;border:1px solid #000"><span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="newsongsprogress"></span></div>
-					</div>
 				</section>
 				
 				<section id="about" class="box">

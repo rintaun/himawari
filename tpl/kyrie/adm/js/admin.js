@@ -255,9 +255,9 @@ function checkAnchor(){
 	}
 }
 
+var asdf = "";
+
 $(function () {
-	'use strict';
-	
 	var setColor = function(p){
 	    var red = p<50 ? 255 : Math.round(256 - (p-50)*5.12);
 	    var green = p>50 ? 255 : Math.round((p)*5.12);
@@ -267,30 +267,41 @@ $(function () {
 	// Initialize the jQuery File Upload widget:
 	$('#songs').fileupload({
 		dropZone: $('body'),
-		sequentialUploads: true
+		sequentialUploads: true,
+		autoUpload: false,
+		url: 'ajax.php?action=uploadsong'
 	})
 	.bind('fileuploadadd', function(e, data){
 		$.each(data.files, function (index, file) {
-			$('#newsongsprogressbar').before('<h2 style="margin-bottom:2px;">'+file.name+'</h2><div id="blahcontainer" style="padding:0;width:100%;height:10px;border:1px solid #000"><span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="blah"></span></div><input type="text" placeholder="Artist" name="newsongartist'+index+'" id="newsongartist'+index+'" class="newsong"/> - <input type="text" placeholder="Title" name="newsongtitle'+index+'" id="newsongtitle'+index+'" class="newsong"/><br /><textarea name="newsongdesc'+index+'" id="newsongdesc'+index+'" placeholder="Description" rows="7"></textarea><br/><span style="width:100%;text-align:right"><img src="/style/adm/img/accept.png"/></span>');
+			$('#songs').append('<div><h2 style="margin-bottom:2px;">'+file.name+'</h2><div class="progress" style="padding:0;width:100%;height:10px;border:1px solid #000"><span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="blah"></span></div><div class="edit"><input type="text" placeholder="Artist" name="newsongartist'+index+'" id="newsongartist'+index+'" class="newsong"/> - <input type="text" placeholder="Title" name="newsongtitle'+index+'" id="newsongtitle'+index+'" class="newsong"/><br /><textarea name="newsongdesc'+index+'" id="newsongdesc'+index+'" placeholder="Description" rows="7"></textarea><br/><span style="width:100%;text-align:right;display:inline-block"><a href="#editnewsong-accept"><img src="../style/adm/img/accept.png" width="30" height="30"/></a><a href="#editnewsong-reject"><img src="../style/adm/img/reject.png" width="30" height="30"/></a></span></div></div>');
+			file.div = $('#songs div:last-child');
+			file.progressbar = $('#songs div:last-child div.progress'); 
+			file.progress = $('#songs div:last-child div.progress span')
+			file.editpart = $('#songs div:last-child div.edit');
+			file.head = $('#songs div:last-child h2')
 		});
-		data.url = 'upload.php';
-		var jqXHR = data.submit();
+	})
+	.bind('fileuploadfail', function(e, data){
+		data.files[0].editpart.effect("highlight", {color: "#F00", mode: "hide"}, 500);
+		data.files[0].head.append(' - <span style="color:#F00;">Filetype not supported</span>');
+		//data.files[0].editpart.fadeOut(function(){$(this).remove();});
+	})
+	.bind('fileuploadsend', function(e, data){
+		//alert(data.files[0].name);
+		if (!data.files[0].name.match(new RegExp(/\.(mp3|mp4|m4a|ogg|wav)$/i))) return false;
+		return true;
 	})
 	.bind('fileuploadprogress', function (e, data) {
 		var progress = parseInt(data.loaded / data.total * 100, 10);
-	    $('#blah').css("width", progress+"%").css("background-color", setColor(progress));
-	})
-	.bind('fileuploadprogressall', function(e, data) {
-		var progress = parseInt(data.loaded / data.total * 100, 10);
-	    $('#newsongsprogress').css("width", progress+"%").css("background-color", setColor(progress));
-		if (progress == 100) {
-			$('#newsongsprogressbar').slideUp();
-		}
-		else if ((progress < 100) && ($('#newsongsprogressbar').css("display") == "none")) {
-			$('#newsongsprogressbar').slideDown();
-		}
+	    data.files[0].progress.css("width", progress+"%").css("background-color", setColor(progress));
 	})
 	.bind('fileuploaddone', function(e, data){
-		$('#blahcontainer').slideUp(function(){$(this).remove();});
+		var result = $.parseJSON(data.result)[0];
+		if (result.error) {
+			alert(result.error);
+			data.files[0].editpart.effect("highlight", {color: "#F00", mode: "hide"}, 500);
+			data.files[0].head.append(' - <span style="color:#F00;">Filetype not supported</span>');
+		}
+		data.files[0].progressbar.slideUp(function(){$(this).remove();});
 	});
 });

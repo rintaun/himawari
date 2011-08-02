@@ -1,4 +1,8 @@
 <?php
+ini_set('memory_limit', '96M');
+ini_set('post_max_size', '64M');
+ini_set('upload_max_filesize', '64M');
+
 header('Vary: Accept');
 if (isset($_SERVER['HTTP_ACCEPT']) &&
 	(strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
@@ -12,11 +16,11 @@ session_start();
 if ((!isset($_SESSION['loggedin'])) || ($_SESSION['loggedin'] !== true)) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");
-if (empty($_GET)) die('{}');
+if (empty($_REQUEST)) die('{}');
 
 $db = sqlite_open('../dat/.db');
 
-switch ($_GET['action'])
+switch ($_REQUEST['action'])
 {
 	case 'editintro':
 		$text = sqlite_escape_string($_GET['introtext']);
@@ -45,6 +49,8 @@ switch ($_GET['action'])
 		//[{"name":"picture1.jpg","size":902604,"url":"\/\/example.org\/files\/picture1.jpg","thumbnail_url":"\/\/example.org\/thumbnails\/picture1.jpg","delete_url":"\/\/example.org\/upload-handler?file=picture1.jpg","delete_type":"DELETE"}]
 		//Note that the response should always be a JSON array even if only one file is uploaded.
 		//see: https://github.com/blueimp/jQuery-File-Upload/wiki/Setup
+		if ($_SERVER['REQUEST_METHOD'] != 'POST') die('[{"name":"","size":0,"type":null,"error":"requestMethod"}]');
+		if (!preg_match('/\.(mp3|mp4|m4a|ogg|wav)$/i', $_FILES['files']['name'])) die('[{"name":"","size":0,"type":null,"error":"acceptFileTypes"}]');
 		break;
 	case 'editsongs':
 		//not really sure what i'm doing with this yet...
