@@ -9,9 +9,6 @@
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
  */
-ini_set('memory_limit', '96M');
-ini_set('post_max_size', '64M');
-ini_set('upload_max_filesize', '64M');
 
 class UploadHandler
 {
@@ -218,7 +215,6 @@ class UploadHandler
     }
     
     public function get() {
-    	print_r($_REQUEST);
         $file_name = isset($_REQUEST['file']) ?
             basename(stripslashes($_REQUEST['files'])) : null; 
         if ($file_name) {
@@ -293,7 +289,9 @@ class UploadHandler
     }
 }
 
-$upload_handler = new UploadHandler();
+$upload_handler = new UploadHandler((array(
+    'discard_aborted_uploads' => false
+));
 
 header('Pragma: no-cache');
 header('Cache-Control: private, no-cache');

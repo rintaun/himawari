@@ -270,6 +270,8 @@ $(function () {
 		sequentialUploads: true,
 		autoUpload: false,
 		url: 'upload.php',
+		maxChunkSize: 2097152,
+		multipart: false
 	})
 	.bind('fileuploadadd', function(e, data){
 		$.each(data.files, function (index, file) {

@@ -13,7 +13,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule style/(.*) /style.php [NC,L]
 RewriteRule song/(.*)  /song.php  [NC,L]
-
-php_value memory_limit        96M
-php_value post_max_size       64M
-php_value upload_max_filesize 64M
