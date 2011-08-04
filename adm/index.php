@@ -1,5 +1,4 @@
 <?php
-//error_reporting(E_STRICT | E_ALL);
 if (!file_exists('../dat/.db'))
 {
         header('Location: install.php');
@@ -42,6 +41,8 @@ $tpl = new Savant3();
 $TEMPLATE = 'kyrie';
 $tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
 
+$tpl->maxUpload = min(mtob(ini_get('upload_max_filesize')), mtob(ini_get('post_max_size')));
+
 $tpl->songlist = (isset($songlist)) ? $songlist : array();
 $tpl->config = (isset($config)) ? $config : array();
 $tpl->links = (isset($links)) ? $links : array();
@@ -50,6 +51,20 @@ $tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
 $tpl->introduction = (isset($config['introduction'])) ? $config['introduction'] : '';
 $tpl->about = (isset($config['aboutme'])) ? $config['aboutme'] : '';
 
+function mtob($m)
+{
+	$c = substr($m,-1);
+	if (is_numeric($c)) return $c * 1024 * 1024;
+	$m = substr($m,0,-1);
+	switch ($c)
+	{
+		case 'K': return $m * 1024;
+		case 'M': return $m * 1024 * 1024;
+		case 'G': return $m * 1024 * 1024 * 1024;
+		case 'T': return $m * 1024 * 1024 * 1024 * 1024;
+	}
+	return intval($m) * 1024 * 1024;
+}
 
 /* shamelessly stolen from the Audio-Player wordpress plugin! */
 function encodeSource($string) {
