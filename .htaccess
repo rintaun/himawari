@@ -8,8 +8,8 @@
 </Files>
 
 RewriteEngine on
-RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule style/(.*) /style.php [NC,L]
-RewriteRule song/(.*)  /song.php  [NC,L]
+RewriteRule ^(.*).php/(.*)$ $1.php [NC,L]
+RewriteRule ^(.*)style/ $1style.php [NC,L]
+RewriteRule ^(.*)song/ $1song.php  [NC,L]
