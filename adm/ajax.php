@@ -10,14 +10,10 @@ if (isset($_SERVER['HTTP_ACCEPT']) &&
 	header('Content-type: text/plain');
 }
 
-if (!$_ENV['installed']) die('{}');
-
-if ((!isset($_SESSION['loggedin'])) || ($_SESSION['loggedin'] !== true)) die('{}');
+if (!$_ENV['INSTALLED'] || !$_ENV['LOGGED_IN']) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");
 if (empty($_REQUEST)) die('{}');
-
-$db = sqlite_open('../dat/.db');
 
 switch ($_REQUEST['action'])
 {

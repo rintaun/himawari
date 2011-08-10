@@ -13,8 +13,6 @@ $tpl->songlist = $_ENV['DB_DATA']['songs'];
 $tpl->config = $_ENV['DB_DATA']['config'];
 $tpl->links = $_ENV['DB_DATA']['links'];
 
-//echo "<pre>" . print_r($_ENV,1);exit;
-
 $tpl->title = (isset($_ENV['DB_DATA']['config']['sitename'])) ? $_ENV['DB_DATA']['config']['sitename'] : '';
 $tpl->introduction = (isset($_ENV['DB_DATA']['config']['introduction'])) ? $_ENV['DB_DATA']['config']['introduction'] : '';
 $tpl->about = (isset($_ENV['DB_DATA']['config']['aboutme'])) ? $_ENV['DB_DATA']['config']['aboutme'] : '';
