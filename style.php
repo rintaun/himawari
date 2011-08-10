@@ -1,11 +1,10 @@
 <?php
-$TEMPLATE = 'kyrie';
+require_once('config.inc.php');
 
-$base = preg_replace('!/style.php$!i', '', preg_replace("!^{$_SERVER['DOCUMENT_ROOT']}!i", '', $_SERVER['SCRIPT_FILENAME']));
-
-if (!$url = preg_replace("!^{$base}/style/!i", "{$base}/tpl/{$TEMPLATE}/", $_SERVER['REQUEST_URI']))
+if (!$url = preg_replace("!{$_ENV['BASE_URL']}style/!i", "{$_ENV['BASE_URL']}tpl/{$_ENV['TEMPLATE']}/", $_ENV['REQUEST']))
 {
-	header('Location: /');
+	header('HTTP/1.0 404 Not Found');
+	header("Status: 404 Not Found");
 	exit;
 }
 header("Location: {$url}");

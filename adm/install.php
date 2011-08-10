@@ -1,12 +1,12 @@
 <?php
+$_CONFIG['BASE_MOD'] = '..';
+require_once('../config.inc.php');
 
-if (file_exists('../dat/.db'))
+if ($_ENV['INSTALLED'])
 {
 	header('Location: index.php');
 	exit;
 }
-
-session_start();
 
 require_once('../lib/Savant3.php');
 $tpl = new Savant3();
@@ -55,7 +55,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == "execute"))
 		else
 		{
 			$queries[] = "CREATE TABLE config (opt TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL)";
-			$queries[] = "CREATE TABLE songs (id INTEGER NOT NULL PRIMARY KEY, artist TEXT NOT NULL, title TEXT NOT NULL, descr TEXT NOT NULL, fname TEXT NOT NULL)";
+			$queries[] = "CREATE TABLE songs (id INTEGER NOT NULL PRIMARY KEY, artist TEXT NOT NULL, title TEXT NOT NULL, descr TEXT NOT NULL, fname TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 0)";
 			$queries[] = "CREATE TABLE links (id INTEGER NOT NULL PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, title TEXT)";
 
 			$username = sqlite_escape_string($_POST['manageruser']);

@@ -8,7 +8,13 @@
  *
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
+ * 
+ * Modifications Copyright 2011, Matthew Lanigan
+ * See LICENSE file.
  */
+
+$_CONFIG['BASE_MOD'] = '..';
+require_once('../config.inc.php');
 
 if (!function_exists('array_replace_recursive'))
 {
@@ -69,25 +75,7 @@ class UploadHandler
             'accept_file_types' => '/(\.|\/)(mp3|mpeg|mp4|m4a|ogg|wav|x-wav)$/i',
             'max_number_of_files' => null,
             'discard_aborted_uploads' => true,
-            'image_versions' => array(
-                // Uncomment the following version to restrict the size of
-                // uploaded images. You can also add additional versions with
-                // their own upload directories:
-                /*
-                'large' => array(
-                    'upload_dir' => dirname(__FILE__).'/files/',
-                    'upload_url' => dirname($_SERVER['PHP_SELF']).'/files/',
-                    'max_width' => 1920,
-                    'max_height' => 1200
-                ),
-                */
-                'thumbnail' => array(
-                    'upload_dir' => dirname(__FILE__).'/thumbnails/',
-                    'upload_url' => dirname($_SERVER['PHP_SELF']).'/thumbnails/',
-                    'max_width' => 80,
-                    'max_height' => 80
-                )
-            )
+            'image_versions' => array()
         );
         
         if ($options) {
@@ -121,55 +109,6 @@ class UploadHandler
             array($this, 'get_file_object'),
             scandir($this->options['upload_dir'])
         )));
-    }
-
-    private function create_scaled_image($file_name, $options) {
-        $file_path = $this->options['upload_dir'].$file_name;
-        $new_file_path = $options['upload_dir'].$file_name;
-        list($img_width, $img_height) = @getimagesize($file_path);
-        if (!$img_width || !$img_height) {
-            return false;
-        }
-        $scale = min(
-            $options['max_width'] / $img_width,
-            $options['max_height'] / $img_height
-        );
-        if ($scale > 1) {
-            $scale = 1;
-        }
-        $new_width = $img_width * $scale;
-        $new_height = $img_height * $scale;
-        $new_img = @imagecreatetruecolor($new_width, $new_height);
-        switch (strtolower(substr(strrchr($file_name, '.'), 1))) {
-            case 'jpg':
-            case 'jpeg':
-                $src_img = @imagecreatefromjpeg($file_path);
-                $write_image = 'imagejpeg';
-                break;
-            case 'gif':
-                $src_img = @imagecreatefromgif($file_path);
-                $write_image = 'imagegif';
-                break;
-            case 'png':
-                $src_img = @imagecreatefrompng($file_path);
-                $write_image = 'imagepng';
-                break;
-            default:
-                $src_img = $image_method = null;
-        }
-        $success = $src_img && @imagecopyresampled(
-            $new_img,
-            $src_img,
-            0, 0, 0, 0,
-            $new_width,
-            $new_height,
-            $img_width,
-            $img_height
-        ) && $write_image($new_img, $new_file_path);
-        // Free up memory (imagedestroy does not delete files):
-        @imagedestroy($src_img);
-        @imagedestroy($new_img);
-        return $success;
     }
     
     private function has_error($uploaded_file, $file, $error) {
@@ -237,12 +176,8 @@ class UploadHandler
             $file_size = filesize($file_path);
             if ($file_size === $file->size) {
                 $file->url = $this->options['upload_url'].rawurlencode($file->name);
-                foreach($this->options['image_versions'] as $version => $options) {
-                    if ($this->create_scaled_image($file->name, $options)) {
-                        $file->{$version.'_url'} = $options['upload_url']
-                            .rawurlencode($file->name);
-                    }
-                }
+                $db = sqlite_open('../dat/.db');
+            	sqlite_query($db, 'INSERT INTO songs VALUES (NULL, "Unknown Artist", "Unknown Title", "Description", "'.$file->name.'", 0)');
             } else if ($this->options['discard_aborted_uploads']) {
                 unlink($file_path);
                 $file->error = 'abort';

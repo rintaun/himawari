@@ -1,22 +1,23 @@
 <?php
-if (!file_exists('../dat/.db'))
+$_CONFIG['BASE_MOD'] = '..';
+require_once('../config.inc.php');
+
+echo "<pre>" . print_r($_ENV,1); exit;
+
+if (!$_ENV['INSTALLED'])
 {
         header('Location: install.php');
         exit;
 }
-
-session_start();
-
-if ((isset($_SESSION['loggedin'])) && ($_SESSION['loggedin'] === true))
+else if ($_ENV['LOGGED_IN'])
 {
 	header('Location: index.php');
 	exit;
 }
 
-$db = sqlite_open('../dat/.db');
-
 $query = "SELECT * FROM config";
 $result = sqlite_query($db, $query);
+
 while ($row = sqlite_fetch_array($result))
 {
 	$config[$row['opt']] = $row['value'];
@@ -35,11 +36,9 @@ if (isset($_POST['action']))
 	else $error = true;
 }
 
-$TEMPLATE = 'kyrie';
-
 require_once('../lib/Savant3.php');
 $tpl = new Savant3();
-$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
+$tpl->addPath('template', '../tpl/' . $_ENV['TEMPLATE'] . '/');
 
 $tpl->title = (isset($config['sitename'])) ? $config['sitename'] : '';
 $tpl->error = $error;
