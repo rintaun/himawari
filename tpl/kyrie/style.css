@@ -185,7 +185,10 @@ img.inlineicon {
 #content input, textarea {
 	width: 565px;
 }
-#content input.newsong {
+#content input.song {
 	width: 274px;
 	display:inline;
+}
+.archived {
+	opacity: 0.5;
 }

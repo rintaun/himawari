@@ -67,7 +67,8 @@ class PurPath{
 							case '\\':
 							case '/':
 								$count++;
-								break 2;
+								$break = true;
+								break;
 							case '.':
 								$count++;
 								$count++;
@@ -77,9 +78,11 @@ class PurPath{
 									$c--;
 								}
 								$return = substr($path,0,$c+1);
-								break 2;
+								$break = true;
+								break;
 						}
 					}
+					if (isset($break) && $break === true) break;
 				default:
 					$return .= $char;
 					$slashed = false;
@@ -157,8 +160,10 @@ class PurPath{
 					if($char==$path2[$count]){
 						$current .= $char;
 					}else{
-						break 2;
+						$break = true;
+						break;
 					}
+					if (isset($break) && $break === true) break;
 			}
 			$count++;
 		}

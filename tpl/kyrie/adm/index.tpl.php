@@ -13,9 +13,47 @@
 		<!--[if lt IE 9]><script src="../lib/html5.js"></script><![endif]-->
 		
 		<script type="text/javascript" src="../lib/jquery/jquery-1.6.2.min.js"></script>
-		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.14.custom.min.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery-ui-1.8.15.custom.min.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery.fileupload.js"></script>
 		<script type="text/javascript" src="../lib/jquery/jquery.iframe-transport.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery.easyconfirm.js"></script>
+		
+		<script id="songNewTemplate" type="text/x-jquery-tmpl">
+			<div id="song${id}" style="display:none">
+				<h2>
+					<a href="#editsong:${id}"><img src="../style/adm/img/edit.png" width="12" height="12" alt="Edit this Song" class="inlineicon" /></a>
+					<a href="#archivesong:${id}"><img src="../style/adm/img/remove.png" width="12" height="12" alt="Archive this Song" id="archivesong${id}" class="inlineicon" /></a>
+					<span id="songartist${id}">${artist}</span> - <span id="songtitle${id}">${title}</span>
+				</h2>
+				<div id="songdesc${id}">{{html desc}}</div>
+				<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_${id}">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
+			</div>
+		</script>
+		
+		<script id="songEditTemplate" type="text/x-jquery-tmpl">
+			<div id="editsong${id}" style="display:none" class="edit">
+				<input type="text" placeholder="Artist" name="editsongartist${id}" id="editsongartist${id}" value="${artist}" class="song"/>
+				-
+				<input type="text" placeholder="Title" name="editsongtitle${id}" id="editsongtitle${id}" value="${title}" class="song"/>
+				<br />
+				<textarea name="editsongdesc${id}" id="editsongdesc${id}" placeholder="Description" rows="7">${desc}</textarea>
+				<br/>
+				<span style="width:100%;text-align:right;display:inline-block">
+					<a href="#editsong-accept:${id}"><img id="editsongaccept${id}" src="../style/adm/img/accept.png" width="30" height="30"/></a>
+					<a href="#editsong-reject:${id}"><img src="../style/adm/img/reject.png" width="30" height="30"/></a>
+				</span>
+			</div>
+		</script>
+		
+		<script id="songUploadingTemplate" type="text/x-jquery-tmpl">
+			<div>
+				<h2 style="margin-bottom:2px;">${name}</h2>
+				<div class="progress" id="progressbar" style="padding:0;width:100%;height:10px;border:1px solid #000">
+					<span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="blah"></span>
+				</div>
+			</div>
+		</script>
 		
 		<script type="text/javascript" src="../style/adm/js/admin.js"></script>
 	</head>
@@ -25,7 +63,7 @@
 			
 			<nav id="sidebar">
 				<h1>Links</h1>
-				<h2 id="addlink"><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
+				<h2 id="addlinkh"><a href="#addlink">Add a Link <img src="../style/adm/img/add.png" alt="Add a Link" width="16" height="16" title="Add a Link" class="inlineicon" /></a></h2>
 				<?php if (!empty($this->links)): ?>
 					<?php foreach ($this->links AS $entry): ?>
 						<h2 id="link<?php echo $this->eprint($entry['id']); ?>">
@@ -63,7 +101,7 @@
 					                <input type="file" name="files[]" multiple style="visibility:hidden;width:0;height:0;margin:0;padding:0;">
 					            </label> 
 							</form>
-							<?php echo $this->eprint($this->config['lang_songs']); ?><a href="#editsongs"><img src="../style/adm/img/edit.png" width="20" height="20" alt="Edit this Section" class="inlineicon" /></a>
+							<?php echo $this->eprint($this->config['lang_songs']); ?>
 						</h1>
 						<h6>
 							<?php if (!isset($_GET['chunk']) && !isset($_GET['nochunk'])): ?>
@@ -102,9 +140,15 @@
 						</h6>
 					</hgroup>
 					<?php foreach ($this->songlist AS $num => $entry): ?>
-						<h2><?php echo $this->eprint($entry['artist']); ?> - <?php echo $this->eprint($entry['title']); ?></h2>
-						<?php echo $this->markdown($entry['descr']); ?>
-						<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
+						<div id="song<?php echo $num ?>"<?php if (!$entry['active']): ?> class="archived"<?php endif; ?>>
+							<h2>
+								<a href="#editsong:<?php echo $num ?>"><img src="../style/adm/img/edit.png" width="12" height="12" alt="Edit this Song" class="inlineicon" /></a>
+								<a href="#archivesong:<?php echo $num ?>"><img src="../style/adm/img/remove.png" width="12" height="12" alt="Archive this Song" id="archivesong<?php echo $num ?>" class="inlineicon" /></a>
+								<span id="songartist<?php echo $num ?>"><?php echo $this->eprint($entry['artist']); ?></span> - <span id="songtitle<?php echo $num ?>"><?php echo $this->eprint($entry['title']); ?></span>
+							</h2>
+							<div id="songdesc<?php echo $num ?>"><?php echo $this->markdown($entry['descr']); ?></div>
+							<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>
+						</div>
 					<?php endforeach; ?>
 				</section>
 				
@@ -154,19 +198,15 @@
 			})
 			.bind('fileuploadadd', function(e, data){
 				$.each(data.files, function (index, file) {
-					$('#songs').append('<div><h2 style="margin-bottom:2px;">'+file.name+'</h2><div class="progress" style="padding:0;width:100%;height:10px;border:1px solid #000"><span style="width:0%;height:100%;display:inline-block;margin:0;position:relative;top:-5px;" id="blah"></span></div><div class="edit"><input type="text" placeholder="Artist" name="newsongartist'+index+'" id="newsongartist'+index+'" class="newsong"/> - <input type="text" placeholder="Title" name="newsongtitle'+index+'" id="newsongtitle'+index+'" class="newsong"/><br /><textarea name="newsongdesc'+index+'" id="newsongdesc'+index+'" placeholder="Description" rows="7"></textarea><br/><span style="width:100%;text-align:right;display:inline-block"><a href="#editnewsong-accept"><img src="../style/adm/img/accept.png" width="30" height="30"/></a><a href="#editnewsong-reject"><img src="../style/adm/img/reject.png" width="30" height="30"/></a></span></div></div>');
+					$('#songUploadingTemplate').tmpl({name:file.name}).appendTo('#songs');
 					file.div = $('#songs div:last-child');
 					file.progressbar = $('#songs div:last-child div.progress'); 
 					file.progress = $('#songs div:last-child div.progress span')
-					file.editpart = $('#songs div:last-child div.edit');
 					file.head = $('#songs div:last-child h2')
-					file.editpart.hide();
 				});
 			})
 			.bind('fileuploadfail', function(e, data){
-				data.files[0].editpart.effect("highlight", {color: "#F00", mode: "hide"}, 500);
 				data.files[0].head.append(' - <span style="color:#F00;">Filetype not supported</span>');
-				//data.files[0].editpart.fadeOut(function(){$(this).remove();});
 			})
 			.bind('fileuploadsend', function(e, data){
 				//alert(data.files[0].name);
@@ -186,9 +226,17 @@
 				else {
 					data.files[0].head.effect("highlight", {color: "#0F0"}, 500);
 					data.files[0].head.append(' - <span style="color:#0F0;">Upload successful</span>');
-					data.files[0].editpart.slideDown();
+					data.files[0].head.attr("id", "filename"+result.id);
+					data.files[0].progressbar.slideUp(function(){
+						$('#songEditTemplate').tmpl({
+							id:result.id,
+							artist:'testartist',
+							title:'testtitle',
+							desc:'testdesc'
+						}).insertAfter(data.files[0].head).slideDown();
+						$(this).remove();
+					});
 				}
-				data.files[0].progressbar.slideUp(function(){$(this).remove();});
 			});
 		});
 		</script>

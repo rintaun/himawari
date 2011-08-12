@@ -19,10 +19,6 @@ if (isset($_POST['action']))
 	else $error = true;
 }
 
-require_once('../lib/Savant3.php');
-$tpl = new Savant3();
-$tpl->addPath('template', '../tpl/' . $_ENV['TEMPLATE'] . '/');
-
 $tpl->title = (isset($_ENV['DB_DATA']['config']['sitename'])) ? $_ENV['DB_DATA']['config']['sitename'] : '';
 $tpl->error = $error;
 

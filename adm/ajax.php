@@ -13,6 +13,7 @@ if (isset($_SERVER['HTTP_ACCEPT']) &&
 if (!$_ENV['INSTALLED'] || !$_ENV['LOGGED_IN']) die('{}');
 
 require_once("../lib/Savant3/resources/Markdown.php");
+
 if (empty($_REQUEST)) die('{}');
 
 switch ($_REQUEST['action'])
@@ -39,11 +40,36 @@ switch ($_REQUEST['action'])
 		die('{"title":"'.$_GET['abouttitle'].'", "text":"'.addcslashes(Markdown($_GET['abouttext']),"\"\r\n").'"}');
 		break;
 
-	case 'uploadsong':
+	case 'editsong':
+		if (!array_keys_exist(array('songartist','songtitle','songdesc','songid'), $_GET)) die('{}');
+		$artist = sqlite_escape_string($_GET['songartist']);
+		$title = sqlite_escape_string($_GET['songtitle']);
+		$desc = sqlite_escape_string($_GET['songdesc']);
+		$id = sqlite_escape_string($_GET['songid']);
+		
+		$query = "UPDATE songs SET artist='{$artist}', title='{$title}', descr='{$desc}' WHERE id='{$id}'";
+		sqlite_exec($db, $query) or die('{}');
+		
+		$query = "SELECT * FROM songs WHERE id='{$id}'";
+		$result = sqlite_query($db, $query) or die('{}');
+		$data = sqlite_fetch_array($result) or die('{}');
+		die('{"id":"'.$data['id'].'", "artist":"'.addslashes($data['artist']).'", "title":"'.addslashes($data['title']).'", "desc":"'.addcslashes(Markdown($data['descr']),"\"\r\n").'","url":"'.addslashes(encodeSource($_ENV['DATA_URL'] . $data['fname'])).'"}');
 		break;
-	case 'editsongs':
-		//not really sure what i'm doing with this yet...
-		break;
+	case 'getsongdescr':
+		if (!array_key_exists('songid', $_GET)) die('{}');
+		$id = sqlite_escape_string($_GET['songid']);
+		
+		$query = "SELECT descr FROM songs WHERE id='{$id}'";
+		$result = sqlite_query($db, $query) or die('{}');
+		$data = sqlite_fetch_array($result) or die('{}');
+		die('{"id":"'.$_GET['songid'].'","descr":"'.addslashes($data['descr']).'"}');
+	case 'archivesong':
+		if (!array_key_exists('songid', $_GET)) die('{}');
+		$id = sqlite_escape_string($_GET['songid']);
+		
+		$query = "UPDATE songs SET active=0 WHERE id='{$id}'";
+		sqlite_exec($db, $query) or die('{}');
+		die('{"id":"'.$id.'"}');
 	case 'removesong':
 		break;
 	
@@ -67,7 +93,7 @@ switch ($_REQUEST['action'])
 		$id = sqlite_escape_string($_GET['id']);
 		
 		$query = "UPDATE links SET url='{$url}', title='{$title}', name='{$name}' WHERE id='{$id}'";
-		sqlite_exec($db, $query, $error) or die($query . " " . $error);
+		sqlite_exec($db, $query) or die('{}');
 		die('{"id":"'.$id.'", "name":"'.addslashes($_GET['linkname']).'", "title":"'.addslashes($_GET['linktitle']).'", "url":"'.addslashes($_GET['linkurl']).'"}');
 		break;
 	case 'removelink':

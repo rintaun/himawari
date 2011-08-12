@@ -17,6 +17,7 @@ $_ENV = array();
  *  - BASE_MOD string Path to the base url root for the software
  *  - DB_POPULATE boolean Whether we should populate the database or not
  *  - DATA_DIRNAME string The name of the data directory
+ *  - LIB_DIRNAME string The name of the library directory
  *  - TEMPLATE_DIRNAME string The name of the template directory
  *
  * Setting values in $_CONFIG prior to including config.inc.php
@@ -28,6 +29,7 @@ $_ENV['CONFIG_DEFAULTS'] = array(
 	'BASE_MOD'     => '',
 	'DB_POPULATE'  => false,
 	'DATA_DIRNAME' => 'dat',
+	'LIB_DIRNAME' => 'lib',
 	'TEMPLATE_DIRNAME'  => 'tpl',
 );
 $_CONFIG = array_merge($_ENV['CONFIG_DEFAULTS'], (isset($_CONFIG) && is_array($_CONFIG) ? $_CONFIG : array()));
@@ -198,6 +200,16 @@ if ((!@is_dir($_ENV['DATA_DIR']) && !mkdir($_ENV['DATA_DIR'])) || !is_writable($
  * @global string $_ENV['DATA_URL']
  */
 $_ENV['DATA_URL'] = $_ENV['BASE_URL'] . $_CONFIG['DATA_DIRNAME'] . '/';
+
+/** The library directory, where software libraries are stored.
+ * @global string $_ENV['LIB_DIR']
+ */
+$_ENV['LIB_DIR'] = $_ENV['BASE_PATH'] . '/' . $_CONFIG['LIB_DIRNAME'] . '/';
+
+/** The URL to the data directory
+ * @global string $_ENV['DATA_URL']
+ */
+$_ENV['LIB_URL'] = $_ENV['BASE_URL'] . $_CONFIG['LIB_DIRNAME'] . '/';
 	
 /** The directory where templates are stored
  * @global string $_ENV['TEMPLATE_DIR']
@@ -267,3 +279,14 @@ if (!session_start()) trigger_error('could not start session', E_USER_ERROR);
  * @global boolean $_ENV['LOGGED_IN']
  */
 $_ENV['LOGGED_IN'] = ((isset($_SESSION['loggedin'])) && ($_SESSION['loggedin'] === true));
+
+require_once($_ENV['LIB_DIR'] . 'Savant3.php');
+
+/** The template engine
+ * @global Savant3 $_ENV['TEMPLATE_ENGINE']
+ * @name $tpl
+ */
+$_ENV['TEMPLATE_ENGINE'] = new Savant3();
+$tpl = $_ENV['TEMPLATE_ENGINE'];
+
+$tpl->addPath('template', $_ENV['TEMPLATE_DIR'] . $_ENV['TEMPLATE'] . '/');

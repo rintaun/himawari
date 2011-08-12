@@ -4,11 +4,6 @@ require_once('config.inc.php');
 
 if (!$_ENV['INSTALLED']) die("You need to <a href='adm/install.php'>install himawari</a> first!");
 
-require_once('lib/Savant3.php');
-$tpl = new Savant3();
-
-$tpl->addPath('template', 'tpl/' . $_ENV['TEMPLATE'] . '/');
-
 $tpl->songlist = $_ENV['DB_DATA']['songs'];
 $tpl->config = $_ENV['DB_DATA']['config'];
 $tpl->links = $_ENV['DB_DATA']['links'];

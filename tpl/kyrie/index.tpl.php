@@ -39,7 +39,7 @@
 					<hgroup>
 						<h1><?php echo $this->eprint($this->config['lang_songs']); ?></h1>
 					</hgroup>
-					<?php foreach ($this->songlist AS $num => $entry): ?>
+					<?php foreach ($this->songlist AS $num => $entry): if (!$entry['active']) continue; ?>
 						<h2><?php echo $this->eprint($entry['artist']); ?> - <?php echo $this->eprint($entry['title']); ?></h2>
 						<?php echo $this->markdown($entry['descr']); ?>
 						<p class="audioplayer_container"><span class="audioplayer" id="audioplayer_<?php echo $num; ?>">Audio clip: Adobe Flash Player (version 9 or above) is required to play this audio clip. Download the latest version <a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" title="Download Adobe Flash Player">here</a>. You also need to have JavaScript enabled in your browser.</span></p>

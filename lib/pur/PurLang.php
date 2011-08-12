@@ -151,9 +151,11 @@ class PurLang{
 								case '-';
 								case '*';
 								case '/';
-									break 2;
+									$break = true;
+									break;
 							}
 						}
+						if (isset($break) && $break === true) break;
 					case '-';
 						if(strlen($scan)===0){
 							switch($lastScan = end($scans)){
@@ -168,16 +170,19 @@ class PurLang{
 								case '*';
 									$scan .= $char;
 									$count++;
-									break 2;
+									$break = true;
+									break;
 								case false;
 									if($lastScan===false){
 										$scan .= $char;
 										$count++;
-										break 2;
+										$break = true;
+										break;
 									}
 									break;
 							}
 						}
+						if (isset($break) && $break === true) break;
 					case '*';
 					case '/';
 					case ')';

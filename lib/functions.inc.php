@@ -42,3 +42,16 @@ function toBytes($m)
 	}
 	return intval($m) * 1024 * 1024;
 }
+
+/**
+ * Checks the existance of any number of keys in a given array
+ * @param array an array of keys to be checked
+ * @param array the array to search
+ * @return boolean whether all specified keys exist in the search array  
+ */
+
+function array_keys_exist(array $keys, array $search) {
+	foreach ($keys AS $key)
+		if (!array_key_exists($key, $search)) return false;
+	return true;
+}

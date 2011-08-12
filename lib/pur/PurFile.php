@@ -75,8 +75,10 @@ class PurFile{
 					case '/':
 					case '\\':
 						$pattern = $i+1;
-						break 2;
+						$break = true;
+						break;
 				}
+				if (isset($break) && $break === true) break;
 			}
 			$options['include'][] = substr($directory,$pattern);
 			$directory = substr($directory,0,$pattern);

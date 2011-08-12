@@ -21,13 +21,17 @@ function enableButton(button){
 	$(button).parent().css('cursor', 'pointer');
 }
 
+jQuery.exists = function(selector) {return ($(selector).length > 0);}
+
 function checkAnchor(){
 	if(currentAnchor == document.location.hash) return;
 	currentAnchor = document.location.hash;
 	
-	var anchor;
+	var anchor, id;
 	if (anchor = currentAnchor.split(':'))
 		id = (anchor[1]) ? anchor[1] : null, anchor = anchor[0];
+	else 
+		id = null;
 		
 	switch (anchor)
 	{
@@ -124,17 +128,123 @@ function checkAnchor(){
 			window.location.hash="";
 			break;
 			
-
-		case '#uploadsong':
+		case '#editsong':
+			if (!id) break;
+			if ($('#editsong' + id).length) break;
+						
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'getsongdescr',
+					songid: id
+				},
+				success: function(song){
+					if ($.isEmptyObject(song)){
+						this.error();
+						return;
+					}
+					$('#song' + id).slideUp(function(){
+						$("#songEditTemplate").tmpl({
+							id: song.id,
+							artist: $('#songartist' + song.id).text(),
+							title: $('#songtitle' + song.id).text(),
+							desc: song.descr
+						}).insertBefore("#song" + id);
+						$('#editsong' + id).slideDown();
+					});
+				},
+				error: function(){
+					alert("Song info retrieve failed!");
+					window.location.hash="";
+				}
+			});
 			break;
-		case '#editsongs':
+		case '#editsong-accept':
+			if (!id) break;
+			$('#editsongaccept' + id).attr("src","../style/adm/img/loading.gif");
+			disableButton('#editsongaccept' + id);
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'editsong',
+					songid: id,
+					songartist: $('#editsongartist' + id).attr("value"),
+					songtitle: $('#editsongtitle' + id).attr("value"),
+					songdesc: $('#editsongdesc' + id).attr("value")
+				},
+				success: function(song){
+					if ($.isEmptyObject(song)){
+						this.error();
+						return;
+					}
+					if ($('#filename' + song.id).length>0){
+						$('#songNewTemplate').tmpl(song).appendTo('#songs').slideDown();
+						$('#filename' + song.id).parent().slideUp(function(){$(this).remove()});
+						
+						AudioPlayer.embed("audioplayer_" + song.id, {soundFile:song.url});
+					}
+					else {
+						$('#songartist' + song.id).text(song.artist);
+						$('#songtitle' + song.id).text(song.title);
+						$('#songdesc' + song.id).html(song.desc);
+						$('#song' + song.id).slideDown();
+					}
+					$('#editsong' + song.id).slideUp(function(){$(this).remove()});
+					window.location.hash="";
+				},
+				error: function(){
+					alert("Song edit failed!");
+					$('#editsongaccept'+id).attr("src","../style/adm/img/accept.png");
+					enableButton('#editsongaccept'+id);
+					window.location.hash="editsong:"+id;
+				}
+			});
 			break;
+		case '#editsong-reject':
+			if (!id) break;
+			$('#editsong' + id).slideUp(function(){
+				$('#song' + id).slideDown();
+				$('#editsong' + id).remove();
+			});
+			break;
+		case '#archivesong':
+			if (!id) break;
+			$('#archivesong' + id).attr("src","../style/adm/img/loading.gif");
+			disableButton('#archivesong' + id);
+			$.ajax({
+				url: 'ajax.php',
+				dataType: 'json',
+				data: {
+					action: 'archivesong',
+					songid: id
+				},
+				success: function(song){
+					if ($.isEmptyObject(song)){
+						this.error();
+						return;
+					}
+					$('#archivesong' + song.id).parent().attr("href", "#removesong:"+song.id);
+					enableButton('#archivesong'+id);
+					$('#archivesong' + song.id).attr("alt", "Remove this Song").attr("src","../style/adm/img/remove.png").attr("id", "#removesong" + song.id);
+					$('#song' + song.id).fadeTo('slow', 0.5,function(){$(this).addClass("archived")});
+					window.location.hash="";
+				},
+				error: function(){
+					alert("Song archive failed!");
+					$('#archivesong'+id).attr("src","../style/adm/img/remove.png");
+					enableButton('#archivesong'+id);
+					window.location.hash="";
+				}
+			});
 		case '#removesong':
+			if (!id) break;
 			break;
-		
+			
 		case '#addlink':
 			if ($('#addlinkform').attr("id")) return;
-			$('#addlink').after('<h2 id="addlinkform" style="display:none;"><label>Name:<br /><input type="text" name="newlinkname" id="newlinkname" /></label><br /><label>Title Text:<br /><input type="text" name="newlinktitle" id="newlinktitle" /></label><br /><label>URL:<br /><input type="url" name="newlinkurl" id="newlinkurl" /></label><br /><a href="#addlink-accept"><img src="../style/adm/img/accept.png" alt="Add Link" width="20" height="20" id="linkaccept" /></a><a href="#addlink-reject"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
+			$('#addlinkh').after('<h2 id="addlinkform" style="display:none;"><label>Name:<br /><input type="text" name="newlinkname" id="newlinkname" /></label><br /><label>Title Text:<br /><input type="text" name="newlinktitle" id="newlinktitle" /></label><br /><label>URL:<br /><input type="url" name="newlinkurl" id="newlinkurl" /></label><br /><a href="#addlink-accept"><img src="../style/adm/img/accept.png" alt="Add Link" width="20" height="20" id="linkaccept" /></a><a href="#addlink-reject"><img src="../style/adm/img/reject.png" alt="Cancel" width="20" height="20" /></a></h2>');
 			$('#addlinkform').slideDown();
 			break;
 		case '#addlink-accept':

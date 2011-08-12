@@ -2,17 +2,7 @@
 $_CONFIG['BASE_MOD'] = '..';
 require_once('../config.inc.php');
 
-if ($_ENV['INSTALLED'])
-{
-	header('Location: index.php');
-	exit;
-}
-
-require_once('../lib/Savant3.php');
-$tpl = new Savant3();
-
-$TEMPLATE = 'kyrie';
-$tpl->addPath('template', '../tpl/' . $TEMPLATE . '/');
+if ($_ENV['INSTALLED']) header('Location: index.php') and exit;
 
 $tpl->manageruser = "";
 $tpl->managerpass = "";

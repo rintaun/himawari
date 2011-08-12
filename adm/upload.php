@@ -176,8 +176,13 @@ class UploadHandler
             $file_size = filesize($file_path);
             if ($file_size === $file->size) {
                 $file->url = $this->options['upload_url'].rawurlencode($file->name);
-                $db = sqlite_open('../dat/.db');
-            	sqlite_query($db, 'INSERT INTO songs VALUES (NULL, "Unknown Artist", "Unknown Title", "Description", "'.$file->name.'", 0)');
+                $fname = sqlite_escape_string($file->name);
+                global $db;
+            	sqlite_exec($db, "INSERT INTO songs VALUES (NULL, 'Unknown Artist', 'Unknown Title', 'Description', '{$fname}', 1)");
+            	
+            	$query = "SELECT last_insert_rowid()";
+				$result = @sqlite_query($db, $query);
+				$file->id = @sqlite_fetch_single($result);
             } else if ($this->options['discard_aborted_uploads']) {
                 unlink($file_path);
                 $file->error = 'abort';
